@@ -1,0 +1,465 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  .edit-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-nav {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--light-bg);
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  .breadcrumb-nav a {
+    color: var(--primary-teal);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .breadcrumb-nav a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-nav span {
+    color: var(--text-muted);
+    margin: 0 0.5rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .resource-name {
+    color: var(--primary-teal);
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-family: "Inter", sans-serif;
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-teal), transparent);
+    margin: 2rem 0 3rem;
+  }
+
+  .edit-form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+  }
+
+  .section-header {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 3rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: "Inter", sans-serif;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+  }
+
+  .form-control:hover,
+  .form-select:hover {
+    border-color: var(--primary-teal);
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+  }
+
+  .file-update-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .file-update-card {
+    background: linear-gradient(
+      135deg,
+      rgba(251, 191, 36, 0.05) 0%,
+      rgba(245, 158, 11, 0.08) 100%
+    );
+    border: 2px dashed #f59e0b;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .file-update-card:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(251, 191, 36, 0.08) 0%,
+      rgba(245, 158, 11, 0.12) 100%
+    );
+    border-color: #d97706;
+  }
+
+  .file-update-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .file-update-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #78350f;
+    margin-bottom: 0.5rem;
+  }
+
+  .file-update-description {
+    font-size: 0.9rem;
+    color: #92400e;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .optional-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+
+  input[type="file"]:hover {
+    border-color: #f59e0b;
+  }
+
+  input[type="file"]::file-selector-button {
+    padding: 0.5rem 1.25rem;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #f59e0b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    background: #d97706;
+  }
+
+  .help-note {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: #fff7ed;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #78350f;
+    line-height: 1.6;
+  }
+
+  .submit-section {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-light);
+  }
+
+  .btn-update {
+    padding: 1.1rem 3.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-update:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(
+      135deg,
+      var(--primary-dark) 0%,
+      var(--primary-teal) 100%
+    );
+  }
+
+  .btn-cancel {
+    padding: 1.1rem 3.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: transparent;
+    border: 2px solid var(--border-light);
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-cancel:hover {
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .edit-form-card {
+      padding: 1.5rem;
+    }
+
+    .form-grid,
+    .file-update-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .submit-section {
+      flex-direction: column;
+    }
+
+    .btn-update,
+    .btn-cancel {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="edit-container">
+  <nav class="breadcrumb-nav">
+    <a href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
+    <span>/</span>
+    <a href="{{ url_for('admin.dashboard') }}">{{ _('Dashboard') }}</a>
+    <span>/</span>
+    <span style="color: var(--text-dark); font-weight: 600"
+      >{{ _('Edit Resource') }}</span
+    >
+  </nav>
+
+  <div class="page-header">
+    <h1 class="page-title">
+      {{ _('Edit Resource:') }}
+      <span class="resource-name">{{ resource.title }}</span>
+    </h1>
+    <p class="page-subtitle">
+      {{ _('Update the resource information and files') }}
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="edit-form-card">
+    <form method="POST" enctype="multipart/form-data" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="form-section">
+        <h2 class="section-header">📚 {{ _('Basic Information') }}</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">{{ form.title.label }}</label>
+            {{ form.title(class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.creator.label }}</label>
+            {{ form.creator(class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.resource_type.label }}</label>
+            {{ form.resource_type(class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.subject.label }}</label>
+            {{ form.subject(class="form-control") }}
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">{{ form.description.label }}</label>
+            {{ form.description(class="form-control", rows=5) }}
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">{{ form.categories.label }}</label>
+            <div
+              class="category-checkboxes border rounded p-3"
+              style="max-height: 150px; overflow-y: auto"
+            >
+              {% for subfield in form.categories %}
+              <div class="form-check">
+                {{ subfield(class="form-check-input") }} {{
+                subfield.label(class="form-check-label") }}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-header">🗓️ {{ _('Publication Details') }}</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">{{ form.publisher.label }}</label>
+            {{ form.publisher(class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.publication_date.label }}</label>
+            {{ form.publication_date(class="form-control", type="date") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.language.label }}</label>
+            {{ form.language(class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.rights.label }}</label>
+            {{ form.rights(class="form-control") }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-header">🔄 {{ _('Update Files') }}</h2>
+
+        <div class="file-update-section">
+          <div class="file-update-card">
+            <div class="file-update-icon">🖼️</div>
+            <h3 class="file-update-title">
+              {{ _('Update Cover Image') }}
+              <span class="optional-badge">{{ _('Optional') }}</span>
+            </h3>
+            <p class="file-update-description">
+              {{ _('Upload a new cover image to replace the existing one') }}
+            </p>
+            <div class="file-input-wrapper">
+              {{ form.preview_image(class="form-control") }}
+            </div>
+          </div>
+
+          <div class="file-update-card">
+            <div class="file-update-icon">📄</div>
+            <h3 class="file-update-title">
+              {{ _('Update Resource File') }}
+              <span class="optional-badge">{{ _('Optional') }}</span>
+            </h3>
+            <p class="file-update-description">
+              {{ _('Upload a new file to replace the existing document') }}
+            </p>
+            <div class="file-input-wrapper">
+              {{ form.resource_file(class="form-control") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="help-note">
+          <strong>{{ _('Note:') }}</strong> {{ _("Leave file fields empty if you
+          don't want to replace the existing files. Only upload new files if you
+          need to update them.") }}
+        </div>
+      </div>
+
+      <div class="submit-section">
+        {{ form.submit(class="btn btn-update", value=_("Update Resource")) }}
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-cancel"
+          >{{ _('Cancel') }}</a
+        >
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

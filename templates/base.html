@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('language', 'en') }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}{{ _('Siyafunda Digital Library') }}{% endblock %}
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-teal: #1b7a8e;
+        --primary-dark: #0d4a58;
+        --accent-orange: #e8744f;
+        --light-bg: #f8fafb;
+        --text-dark: #1a2332;
+        --text-muted: #5a6c7d;
+        --border-light: #e1e8ed;
+        --success-green: #10b981;
+        --shadow-sm: 0 2px 8px rgba(27, 122, 142, 0.08);
+        --shadow-md: 0 4px 16px rgba(27, 122, 142, 0.12);
+        --shadow-lg: 0 8px 32px rgba(27, 122, 142, 0.16);
+        --white: #ffffff;
+        --card-bg: #ffffff;
+        --body-bg: #ffffff;
+
+        /* Additional light mode variables */
+        --input-bg: #ffffff;
+        --input-border: #e1e8ed;
+        --heading-color: #1a2332;
+        --link-color: #1b7a8e;
+        --badge-bg: #e8744f;
+        --badge-text: #ffffff;
+        --table-header-bg: #f8f9fa;
+        --table-border: #dee2e6;
+      }
+
+      .dark {
+        /* Background colors - HIGH CONTRAST */
+        --body-bg: #0f1419;
+        --card-bg: #1a202c;
+        --light-bg: #2d3748;
+        --input-bg: #2d3748;
+
+        /* Text colors - HIGH CONTRAST */
+        --text-dark: #f7fafc;
+        --text-muted: #cbd5e0;
+        --heading-color: #ffffff;
+
+        /* Border and UI elements */
+        --border-light: #4a5568;
+        --input-border: #4a5568;
+        --table-border: #4a5568;
+
+        /* Interactive elements */
+        --link-color: #4fd1c5;
+        --primary-teal: #4fd1c5;
+        --primary-dark: #38b2ac;
+        --accent-orange: #f6ad55;
+
+        /* Table and data */
+        --table-header-bg: #2d3748;
+
+        /* Badges and highlights */
+        --badge-bg: #4c5361;
+        --badge-text: #f7fafc;
+
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--text-dark);
+        background-color: var(--body-bg);
+        line-height: 1.6;
+        padding-bottom: 0;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Playfair Display", serif;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--heading-color) !important;
+      }
+
+      p,
+      span,
+      div,
+      li,
+      td,
+      th,
+      label,
+      small {
+        color: var(--text-dark);
+      }
+
+      .text-muted {
+        color: var(--text-muted) !important;
+      }
+
+      /* Enhanced Navigation */
+      .navbar {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-teal) 100%
+        );
+        box-shadow: var(--shadow-md);
+        padding: 0.75rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      /* Compact Logo */
+      .navbar-brand {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        color: var(--white) !important;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .navbar-brand:hover {
+        transform: translateY(-2px);
+      }
+
+      .logo-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0.1rem;
+      }
+
+      .logo-text {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        font-weight: 600;
+        opacity: 0.95;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 0.5rem 0.85rem !important;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: var(--white) !important;
+      }
+
+      /* User Dropdown */
+      .user-dropdown-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.85rem !important;
+      }
+
+      .dropdown-menu {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-light);
+        box-shadow: var(--shadow-md);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+      }
+
+      .dropdown-item {
+        color: var(--text-dark);
+        padding: 0.5rem 1.25rem;
+        transition: all 0.2s ease;
+      }
+
+      .dropdown-item:hover {
+        background-color: var(--light-bg);
+        color: var(--primary-teal);
+      }
+
+      .dropdown-item i {
+        width: 20px;
+        margin-right: 0.5rem;
+      }
+
+      .dropdown-divider {
+        border-color: var(--border-light);
+      }
+
+      /* Expanded Search Bar */
+      .search-bar-expanded {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-teal) 100%
+        );
+        padding: 1.5rem 0;
+        box-shadow: var(--shadow-sm);
+        display: none;
+        animation: slideDown 0.3s ease;
+      }
+
+      .search-bar-expanded.show {
+        display: block;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .search-bar-expanded .form-control {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 10px;
+      }
+
+      .search-bar-expanded .form-control:focus {
+        background-color: white;
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 0 3px rgba(232, 116, 79, 0.2);
+      }
+
+      .search-bar-expanded .btn-primary {
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        border-radius: 10px;
+        background: var(--accent-orange);
+        border: none;
+      }
+
+      .search-bar-expanded .btn-primary:hover {
+        background: #d66941;
+        transform: translateY(-2px);
+      }
+
+      .search-bar-expanded .btn-outline-light {
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        background: transparent;
+      }
+
+      .search-bar-expanded .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: white;
+      }
+
+      /* Suggestions */
+      .suggestions-wrapper {
+        position: relative;
+      }
+
+      .suggestions-box {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        z-index: 1050;
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: var(--shadow-lg);
+        margin-top: 2px;
+      }
+
+      .suggestion-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        color: var(--text-dark);
+        border-bottom: 1px solid var(--border-light);
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+      }
+
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+
+      .suggestion-item:hover {
+        background-color: var(--light-bg);
+        color: var(--primary-teal);
+        padding-left: 1.25rem;
+      }
+
+      /* Custom Toast Notifications */
+      #toast-container {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 420px;
+      }
+
+      .custom-toast {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-left: 4px solid;
+        animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .custom-toast.success {
+        border-left-color: #10b981;
+      }
+      .custom-toast.error {
+        border-left-color: #ef4444;
+      }
+      .custom-toast.danger {
+        border-left-color: #ef4444;
+      }
+      .custom-toast.warning {
+        border-left-color: #f59e0b;
+      }
+      .custom-toast.info {
+        border-left-color: #3b82f6;
+      }
+
+      .custom-toast-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .custom-toast.success .custom-toast-icon {
+        color: #10b981;
+      }
+      .custom-toast.error .custom-toast-icon,
+      .custom-toast.danger .custom-toast-icon {
+        color: #ef4444;
+      }
+      .custom-toast.warning .custom-toast-icon {
+        color: #f59e0b;
+      }
+      .custom-toast.info .custom-toast-icon {
+        color: #3b82f6;
+      }
+
+      .custom-toast-content {
+        flex: 1;
+        color: var(--text-dark);
+        font-weight: 500;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .custom-toast-close {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .custom-toast-close:hover {
+        background: var(--light-bg);
+        color: var(--text-dark);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(450px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(450px);
+          opacity: 0;
+        }
+      }
+
+      .custom-toast.hiding {
+        animation: slideOut 0.3s ease-out forwards;
+      }
+
+      .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: currentColor;
+        opacity: 0.3;
+        animation: progress 5s linear;
+      }
+
+      @keyframes progress {
+        from {
+          width: 100%;
+        }
+        to {
+          width: 0%;
+        }
+      }
+
+      /* Responsive toast positioning */
+      @media (max-width: 768px) {
+        #toast-container {
+          right: 10px;
+          left: 10px;
+          max-width: none;
+          top: 70px;
+        }
+
+        .custom-toast {
+          padding: 0.85rem 1.25rem;
+        }
+      }
+
+      /* Main Content */
+      main.container {
+        min-height: calc(100vh - 200px);
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+      }
+
+      /* Cards and containers */
+      .card {
+        background-color: var(--card-bg) !important;
+        border: 1px solid var(--border-light) !important;
+        color: var(--text-dark) !important;
+      }
+
+      .card-header {
+        background-color: var(--light-bg) !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        color: var(--text-dark) !important;
+      }
+
+      .card-footer {
+        background-color: var(--light-bg) !important;
+        border-top: 1px solid var(--border-light) !important;
+        color: var(--text-dark) !important;
+      }
+
+      .card-title,
+      .card-text {
+        color: var(--text-dark) !important;
+      }
+
+      .list-group-item {
+        background-color: var(--card-bg);
+        border-color: var(--border-light);
+        color: var(--text-dark);
+      }
+
+      .list-group-item-action:hover {
+        background-color: var(--light-bg);
+      }
+
+      /* Forms */
+      .form-control,
+      .form-select {
+        background-color: var(--input-bg) !important;
+        border-color: var(--input-border) !important;
+        color: var(--text-dark) !important;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        background-color: var(--input-bg) !important;
+        border-color: var(--primary-teal);
+        color: var(--text-dark);
+        box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.2);
+      }
+
+      .form-control::placeholder {
+        color: var(--text-muted) !important;
+        opacity: 0.8;
+      }
+
+      .form-label,
+      .form-text {
+        color: var(--text-dark) !important;
+      }
+
+      /* Tables */
+      .table {
+        color: var(--text-dark) !important;
+        border-color: var(--table-border) !important;
+      }
+
+      .table th {
+        background-color: var(--table-header-bg) !important;
+        color: var(--text-dark) !important;
+        border-color: var(--table-border) !important;
+      }
+
+      .table td {
+        background-color: var(--card-bg) !important;
+        color: var(--text-dark) !important;
+        border-color: var(--table-border) !important;
+      }
+
+      .table tbody tr:hover {
+        background-color: var(--light-bg) !important;
+      }
+
+      /* Badges */
+      .badge {
+        background-color: var(--badge-bg) !important;
+        color: var(--badge-text) !important;
+      }
+
+      .badge.bg-primary {
+        background-color: var(--primary-teal) !important;
+      }
+
+      .badge.bg-secondary {
+        background-color: var(--text-muted) !important;
+      }
+
+      /* Buttons */
+      .btn-outline-secondary {
+        color: var(--text-muted);
+        border-color: var(--border-light);
+      }
+
+      .btn-outline-secondary:hover {
+        background-color: var(--border-light);
+        color: var(--text-dark);
+      }
+
+      /* Links */
+      a {
+        color: var(--link-color);
+      }
+
+      a:hover {
+        color: var(--primary-teal);
+      }
+
+      /* Progress bars */
+      .progress {
+        background-color: var(--light-bg);
+      }
+
+      .progress-bar {
+        background-color: var(--primary-teal);
+      }
+
+      /* Breadcrumbs */
+      .breadcrumb {
+        background-color: var(--light-bg);
+      }
+
+      .breadcrumb-item,
+      .breadcrumb-item a {
+        color: var(--text-muted);
+      }
+
+      .breadcrumb-item.active {
+        color: var(--text-dark);
+      }
+
+      /* Modal */
+      .modal-content {
+        background-color: var(--card-bg);
+        color: var(--text-dark);
+        border-color: var(--border-light);
+      }
+
+      .modal-header,
+      .modal-footer {
+        border-color: var(--border-light);
+      }
+
+      .modal-title {
+        color: var(--heading-color);
+      }
+
+      /* Pagination */
+      .page-link {
+        background-color: var(--card-bg);
+        border-color: var(--border-light);
+        color: var(--text-dark);
+      }
+
+      .page-link:hover {
+        background-color: var(--light-bg);
+        border-color: var(--border-light);
+        color: var(--text-dark);
+      }
+
+      .page-item.active .page-link {
+        background-color: var(--primary-teal);
+        border-color: var(--primary-teal);
+        color: white;
+      }
+
+      /* Utility classes override for dark mode */
+      .dark .bg-light {
+        background-color: var(--light-bg) !important;
+      }
+
+      .dark .bg-white {
+        background-color: var(--card-bg) !important;
+      }
+
+      .dark .text-dark {
+        color: var(--text-dark) !important;
+      }
+
+      .dark .border {
+        border-color: var(--border-light) !important;
+      }
+
+      .dark .border-light {
+        border-color: var(--border-light) !important;
+      }
+
+      /* Additional specific fixes for common elements */
+      .dark .shadow-sm {
+        box-shadow: var(--shadow-sm) !important;
+      }
+
+      /* Stats cards and dashboard elements */
+      .stat-card,
+      .dashboard-widget {
+        background-color: var(--card-bg) !important;
+        border: 1px solid var(--border-light) !important;
+        color: var(--text-dark) !important;
+      }
+
+      /* Footer */
+      footer {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-teal) 100%
+        );
+        color: rgba(255, 255, 255, 0.9);
+        padding: 2rem 0;
+        margin-top: 4rem;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      footer p {
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+      }
+
+      .footer-links {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      /* ===== Responsive & Aesthetic Enhancements ===== */
+
+      /* 1. Fluid Typography for better scaling on all devices */
+      h1 {
+        /* font-size: clamp(MIN-SIZE, PREFERRED-SIZE, MAX-SIZE); */
+        font-size: clamp(2rem, 1.5rem + 2.5vw, 2.8rem) !important;
+      }
+
+      h2 {
+        font-size: clamp(1.8rem, 1.2rem + 2vw, 2.2rem) !important;
+      }
+
+      /* 2. Adjust main container padding on mobile for more space */
+      @media (max-width: 576px) {
+        main.container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+
+      /* 3. Improve layout of navbar controls when it's collapsed */
+      @media (max-width: 991.98px) {
+        .navbar-collapse {
+          background-color: rgba(13, 74, 88, 0.98);
+          padding: 1rem;
+          border-radius: 12px;
+          margin-top: 1rem;
+        }
+      }
+
+      /* ===== NEW: Improved UI Controls ===== */
+      .nav-control-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* Make it circular */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-decoration: none;
+      }
+
+      .nav-control-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-1px);
+        color: white;
+      }
+
+      .language-dropdown .dropdown-toggle {
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+
+      .language-dropdown .dropdown-toggle::after {
+        margin-left: 0.5em; /* Space for the chevron */
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="{{ session.get('theme', 'light') }}">
+    <div id="toast-container"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+          <div class="logo-icon">📚</div>
+          <div class="logo-text">S_D_L</div>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.index') }}"
+                >{{ _('Home') }}</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.browse') }}"
+                >{{ _('Browse') }}</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.about') }}"
+                >{{ _('About') }}</a
+              >
+            </li>
+          </ul>
+
+          <div
+            class="d-flex flex-column flex-lg-row align-items-center gap-2 mt-3 mt-lg-0"
+          >
+            <div class="d-flex flex-row gap-2 align-items-center">
+              <div class="nav-item dropdown language-dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-globe"></i>
+                  {% if session.get('language', 'en') == 'zu' %} isiZulu {% else
+                  %} English {% endif %}
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('main.set_language', lang='en') }}"
+                      >English</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('main.set_language', lang='zu') }}"
+                      >isiZulu</a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              {% if current_user.is_authenticated and current_user.role !=
+              'admin' %}
+              <a
+                class="nav-control-btn"
+                id="searchToggleBtn"
+                href="#"
+                title="Search"
+              >
+                <i class="fas fa-search"></i>
+              </a>
+              {% endif %} {% if current_user.is_authenticated %} {% if
+              session.get('theme') == 'dark' %}
+              <a
+                href="{{ url_for('main.set_theme', theme='light') }}"
+                class="nav-control-btn"
+                title="Switch to Light Mode"
+              >
+                <i class="fas fa-sun"></i>
+              </a>
+              {% else %}
+              <a
+                href="{{ url_for('main.set_theme', theme='dark') }}"
+                class="nav-control-btn"
+                title="Switch to Dark Mode"
+              >
+                <i class="fas fa-moon"></i>
+              </a>
+              {% endif %} {% endif %}
+            </div>
+
+            <ul class="navbar-nav">
+              {% if current_user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle user-dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-user-circle"></i>
+                  <span>{{ current_user.username }}</span>
+                </a>
+                <ul
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="userDropdown"
+                >
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('user.my_account') }}"
+                    >
+                      <i class="fas fa-user"></i>{{ _('My Account') }}
+                    </a>
+                  </li>
+                  {% if current_user.role == 'admin' %}
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('admin.dashboard') }}"
+                    >
+                      <i class="fas fa-tachometer-alt"></i>{{ _('Dashboard') }}
+                    </a>
+                  </li>
+                  {% endif %}
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('auth.logout') }}"
+                    >
+                      <i class="fas fa-sign-out-alt"></i>{{ _('Logout') }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.login') }}"
+                  >{{ _('Login') }}</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.register') }}"
+                  >{{ _('Register') }}</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    {% if current_user.is_authenticated and current_user.role != 'admin' %}
+    <div class="search-bar-expanded" id="searchBarExpanded">
+      <div class="container">
+        <div class="suggestions-wrapper">
+          <form
+            id="search-form"
+            method="GET"
+            action="{{ url_for('main.search') }}"
+          >
+            <div class="row g-3 align-items-center">
+              <div class="col-md-8">
+                <input
+                  id="search-input"
+                  class="form-control"
+                  type="search"
+                  name="q"
+                  placeholder="{{ _('Search for books, journals, articles...') }}"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-primary flex-grow-1" type="submit">
+                    <i class="fas fa-search"></i> {{ _('Search') }}
+                  </button>
+                  <a
+                    href="{{ url_for('main.advanced_search') }}"
+                    class="btn btn-outline-light"
+                  >
+                    <i class="fas fa-sliders-h"></i> {{ _('Advanced') }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div id="suggestions-box" class="suggestions-box d-none"></div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <main class="container mt-4">{% block content %}{% endblock %}</main>
+
+    <footer class="text-white text-center">
+      <p>
+        &copy; 2025 {{ _('Siyafunda Digital Library') }} - DUT | Empowering
+        Learning Through Digital Access
+      </p>
+      <div class="footer-links">
+        <a href="{{ url_for('main.set_language', lang='en') }}">English</a>
+        <a href="{{ url_for('main.set_language', lang='zu') }}">isiZulu</a>
+        <span>|</span>
+        <a href="{{ url_for('main.about') }}">{{ _('About') }}</a>
+        <a href="#">{{ _('Privacy Policy') }}</a>
+        <a href="#">{{ _('Terms of Use') }}</a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Flash messages from Flask - Auto-show as toasts
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          document.addEventListener('DOMContentLoaded', function() {
+            {% for category, message in messages %}
+              showToast('{{ message|safe }}', '{{ category }}');
+            {% endfor %}
+          });
+        {% endif %}
+      {% endwith %}
+
+      /**
+       * Show a toast notification
+       * @param {string} message - The message to display
+       * @param {string} type - Type: 'success', 'error', 'danger', 'warning', 'info'
+       * @param {number} duration - Duration in milliseconds (default: 5000)
+       */
+      function showToast(message, type = 'info', duration = 5000) {
+        const container = document.getElementById('toast-container');
+
+        const icons = {
+          success: 'fa-check-circle',
+          error: 'fa-exclamation-circle',
+          danger: 'fa-exclamation-circle',
+          warning: 'fa-exclamation-triangle',
+          info: 'fa-info-circle'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `custom-toast ${type}`;
+        toast.innerHTML = `
+          <div class="custom-toast-icon">
+            <i class="fas ${icons[type] || icons.info}"></i>
+          </div>
+          <div class="custom-toast-content">${message}</div>
+          <button class="custom-toast-close" onclick="dismissToast(this)">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="toast-progress"></div>
+        `;
+
+        container.appendChild(toast);
+
+        // Auto-dismiss after duration
+        const timeoutId = setTimeout(() => {
+          dismissToast(toast.querySelector('.custom-toast-close'));
+        }, duration);
+
+        // Pause timer on hover
+        toast.addEventListener('mouseenter', () => {
+          clearTimeout(timeoutId);
+          const progressBar = toast.querySelector('.toast-progress');
+          if (progressBar) {
+            progressBar.style.animationPlayState = 'paused';
+          }
+        });
+
+        // Resume timer on mouse leave
+        toast.addEventListener('mouseleave', () => {
+          const remainingTime = 2000; // Give 2 more seconds on hover leave
+          setTimeout(() => {
+            dismissToast(toast.querySelector('.custom-toast-close'));
+          }, remainingTime);
+        });
+      }
+
+      /**
+       * Dismiss a toast notification
+       * @param {HTMLElement} button - The close button or toast element
+       */
+      function dismissToast(button) {
+        const toast = button.closest ? button.closest('.custom-toast') : button;
+        if (!toast) return;
+
+        toast.classList.add('hiding');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.remove();
+          }
+        }, 300);
+      }
+
+      // Search functionality
+      const searchToggleBtn = document.getElementById("searchToggleBtn");
+      const searchBarExpanded = document.getElementById("searchBarExpanded");
+      const searchInput = document.getElementById("search-input");
+
+      if (searchToggleBtn) {
+        searchToggleBtn.addEventListener("click", function (e) {
+          e.preventDefault(); // Prevent page jump from <a> tag
+          searchBarExpanded.classList.toggle("show");
+          if (searchBarExpanded.classList.contains("show")) {
+            setTimeout(() => searchInput.focus(), 300);
+          }
+        });
+      }
+
+      const suggestionsBox = document.getElementById("suggestions-box");
+      const searchForm = document.getElementById("search-form");
+
+      if (searchInput) {
+        searchInput.addEventListener("input", async function () {
+          const query = this.value.trim();
+          if (query.length < 2) {
+            suggestionsBox.classList.add("d-none");
+            return;
+          }
+          try {
+            const response = await fetch(
+              `/search/suggestions?q=${encodeURIComponent(query)}`
+            );
+            const suggestions = await response.json();
+            suggestionsBox.innerHTML = "";
+            if (suggestions.length > 0) {
+              suggestionsBox.classList.remove("d-none");
+              suggestions.forEach((item) => {
+                const div = document.createElement("div");
+                div.textContent = item;
+                div.classList.add("suggestion-item");
+                div.onclick = function () {
+                  searchInput.value = item;
+                  suggestionsBox.classList.add("d-none");
+                  searchForm.submit();
+                };
+                suggestionsBox.appendChild(div);
+              });
+            } else {
+              suggestionsBox.classList.add("d-none");
+            }
+          } catch (error) {
+            console.error("Error fetching suggestions:", error);
+            suggestionsBox.classList.add("d-none");
+          }
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
+            suggestionsBox.classList.add("d-none");
+          }
+        });
+
+        searchInput.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            suggestionsBox.classList.add("d-none");
+            searchBarExpanded.classList.remove("show");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

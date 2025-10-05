@@ -1,0 +1,528 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  :root {
+    --theme-blue: #1b7a8e;
+    --theme-dark: #0d4a58;
+    --theme-lime: #a3e635;
+    --theme-gray: #f8fafb;
+  }
+
+  .upload-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-family: "Inter", sans-serif;
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-teal), transparent);
+    margin: 2rem 0 3rem;
+  }
+
+  .upload-form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+  }
+
+  .section-header {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 3rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-label.required::after {
+    content: " *";
+    color: #ef4444;
+    font-weight: 700;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: "Inter", sans-serif;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+  }
+
+  .form-control:hover,
+  .form-select:hover {
+    border-color: var(--primary-teal);
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+  }
+
+  .file-upload-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .file-upload-card {
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.05) 0%,
+      rgba(13, 74, 88, 0.08) 100%
+    );
+    border: 2px dashed var(--primary-teal);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .file-upload-card:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.08) 0%,
+      rgba(13, 74, 88, 0.12) 100%
+    );
+    border-color: var(--primary-dark);
+  }
+
+  .file-upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .file-upload-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .file-upload-description {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+
+  input[type="file"]:hover {
+    border-color: var(--primary-teal);
+  }
+
+  input[type="file"]::file-selector-button {
+    padding: 0.5rem 1.25rem;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary-teal);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    background: var(--primary-dark);
+  }
+
+  .required-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background: #fee2e2;
+    color: #dc2626;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+
+  .optional-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+
+  .submit-section {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-light);
+  }
+
+  .btn-submit {
+    padding: 1.1rem 3.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(
+      135deg,
+      var(--primary-dark) 0%,
+      var(--primary-teal) 100%
+    );
+  }
+
+  .btn-submit:active {
+    transform: translateY(-1px);
+  }
+
+  .help-note {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #78350f;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .upload-form-card {
+      padding: 1.5rem;
+    }
+
+    .form-grid,
+    .file-upload-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+    }
+  }
+
+  /* Style for validation errors */
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  .is-invalid {
+    border-color: #dc3545 !important;
+  }
+  .is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+  }
+</style>
+
+<div class="upload-container">
+  <div class="page-header">
+    <h1 class="page-title">{{ _('Upload New Resource') }}</h1>
+    <p class="page-subtitle">
+      {{ _('Add a new digital resource to the library collection') }}
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="upload-form-card">
+    <form method="POST" enctype="multipart/form-data" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="form-section">
+        <h2 class="section-header">📚 {{ _('Basic Information') }}</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label required">{{ form.title.label }}</label>
+            {{ form.title(class="form-control" + (" is-invalid" if
+            form.title.errors else ""), placeholder=_('Enter the full title'))
+            }}
+            <div class="invalid-feedback">
+              {% for error in form.title.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">{{ form.creator.label }}</label>
+            {{ form.creator(class="form-control" + (" is-invalid" if
+            form.creator.errors else ""), placeholder=_('Author or creator
+            name')) }}
+            <div class="invalid-feedback">
+              {% for error in form.creator.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required"
+              >{{ form.resource_type.label }}</label
+            >
+            {{ form.resource_type(class="form-select") }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.subject.label }}</label>
+            {{ form.subject(class="form-control", placeholder=_('Keywords,
+            separated by commas')) }}
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">{{ form.description.label }}</label>
+            {{ form.description(class="form-control", rows=5,
+            placeholder=_('Provide a detailed description of the resource...'))
+            }}
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">{{ form.categories.label }}</label>
+            <div
+              class="category-checkboxes border rounded p-3"
+              style="max-height: 150px; overflow-y: auto"
+            >
+              {% for subfield in form.categories %}
+              <div class="form-check">
+                {{ subfield(class="form-check-input") }} {{
+                subfield.label(class="form-check-label") }}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-header">🗓️ {{ _('Publication Details') }}</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">{{ form.publisher.label }}</label>
+            {{ form.publisher(class="form-control", placeholder=_('Publishing
+            organization')) }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.publication_date.label }}</label>
+            {{ form.publication_date( class="form-control" + (" is-invalid" if
+            form.publication_date.errors else ""), type="date",
+            id="publication_date", max=current_date, min="1000-01-01" ) }}
+            <div class="invalid-feedback">
+              {% for error in form.publication_date.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.language.label }}</label>
+            {{ form.language(class="form-control", placeholder=_('e.g., English,
+            isiZulu')) }}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ form.rights.label }}</label>
+            {{ form.rights(class="form-control", placeholder=_('Copyright or
+            usage rights')) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-header">📤 {{ _('File Uploads') }}</h2>
+
+        <div class="file-upload-section">
+          <div class="file-upload-card">
+            <div class="file-upload-icon">🖼️</div>
+            <h3 class="file-upload-title">
+              {{ _('Cover Image') }}
+              <span class="optional-badge">{{ _('Optional') }}</span>
+            </h3>
+            <p class="file-upload-description">
+              {{ _('Upload a preview image (book cover, thumbnail, etc.)') }}
+            </p>
+            <div class="file-input-wrapper">
+              {{ form.preview_image(class="form-control" + (" is-invalid" if
+              form.preview_image.errors else "")) }}
+              <div class="invalid-feedback">
+                {% for error in form.preview_image.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="file-upload-card">
+            <div class="file-upload-icon">📄</div>
+            <h3 class="file-upload-title">
+              {{ _('Resource File') }}
+              <span class="required-badge">{{ _('Required') }}</span>
+            </h3>
+            <p class="file-upload-description">
+              {{ _('Upload the main document (PDF, EPUB, etc.)') }}
+            </p>
+            <div class="file-input-wrapper">
+              {{ form.resource_file(class="form-control" + (" is-invalid" if
+              form.resource_file.errors else "")) }}
+              <div class="invalid-feedback">
+                {% for error in form.resource_file.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-note">
+          <strong>{{ _('Note:') }}</strong> {{ _('Supported formats include PDF
+          and EPUB. Maximum file size is 50MB per file.') }}
+        </div>
+      </div>
+
+      <div class="submit-section">
+        {{ form.submit(class="btn btn-submit") }}
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("publication_date");
+
+    if (dateInput) {
+      // Validate on input
+      dateInput.addEventListener("input", function () {
+        const value = this.value;
+
+        if (value) {
+          const parts = value.split("-");
+          if (parts.length === 3) {
+            const year = parseInt(parts[0]);
+            const currentYear = new Date().getFullYear();
+
+            // Check if year is exactly 4 digits and in valid range
+            if (parts[0].length !== 4 || year < 1000 || year > currentYear) {
+              this.value = "";
+              this.classList.add("is-invalid");
+              alert(
+                "Please enter a valid year between 1000 and " + currentYear
+              );
+            } else {
+              this.classList.remove("is-invalid");
+            }
+          }
+        }
+      });
+
+      // Additional validation on change
+      dateInput.addEventListener("change", function () {
+        if (this.value) {
+          const date = new Date(this.value);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          if (date > today) {
+            this.value = "";
+            this.classList.add("is-invalid");
+            alert("Publication date cannot be in the future.");
+          }
+        }
+      });
+    }
+  });
+</script>
+
+{% endblock %}

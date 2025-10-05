@@ -1,0 +1,669 @@
+{% extends "base.html" %} {% block title %}{{ _('Advanced Search') }}{% endblock
+%} {% block content %}
+<style>
+  .advanced-search-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-description {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    font-family: "Inter", sans-serif;
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-teal), transparent);
+    margin: 2rem 0 3rem;
+  }
+
+  .search-form-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: var(--light-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+  }
+
+  .search-row:hover {
+    background: rgba(27, 122, 142, 0.05);
+    border-color: var(--primary-teal);
+  }
+
+  .operator-select {
+    min-width: 100px;
+    padding: 0.75rem;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-teal);
+    background-color: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .operator-select:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+  }
+
+  .term-label {
+    min-width: 70px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--heading-color);
+  }
+
+  .term-input {
+    flex: 1;
+    padding: 0.85rem 1.25rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+  }
+
+  .term-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .term-input:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+  }
+
+  .field-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .field-select {
+    min-width: 140px;
+    padding: 0.75rem;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    background-color: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .field-select:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+  }
+
+  .year-range-section {
+    margin-top: 2rem;
+    padding: 1.75rem;
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.05) 0%,
+      rgba(13, 74, 88, 0.08) 100%
+    );
+    border-radius: 12px;
+    border: 1px solid rgba(27, 122, 142, 0.15);
+  }
+
+  .dark .year-range-section {
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.1) 0%,
+      rgba(13, 74, 88, 0.15) 100%
+    );
+    border-color: rgba(27, 122, 142, 0.3);
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title::before {
+    content: "📅";
+    font-size: 1.3rem;
+  }
+
+  .year-inputs-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .year-input-group {
+    flex: 1;
+  }
+
+  .year-input-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .year-input {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+  }
+
+  .year-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .year-input:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.1);
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+  }
+
+  .year-separator {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-teal);
+    margin-top: 1.75rem;
+  }
+
+  .submit-section {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+
+  .btn-search {
+    padding: 1.1rem 3.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+
+  .btn-search:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(
+      135deg,
+      var(--primary-dark) 0%,
+      var(--primary-teal) 100%
+    );
+    color: white;
+  }
+
+  .btn-search:active {
+    transform: translateY(-1px);
+  }
+
+  .help-text {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(251, 146, 60, 0.1);
+    border-left: 4px solid #fb923c;
+    border-radius: 8px;
+  }
+
+  .dark .help-text {
+    background: rgba(251, 146, 60, 0.15);
+    border-left-color: #fdba74;
+  }
+
+  .help-title {
+    font-weight: 700;
+    color: #9a3412;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dark .help-title {
+    color: #fdba74;
+  }
+
+  .help-content {
+    color: #9a3412;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .dark .help-content {
+    color: #fed7aa;
+  }
+
+  .help-content ul {
+    margin: 0.5rem 0 0 1.25rem;
+    padding: 0;
+  }
+
+  .help-content li {
+    margin-bottom: 0.35rem;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary-teal);
+    color: var(--text-dark);
+    box-shadow: 0 0 0 3px rgba(27, 122, 142, 0.2);
+  }
+
+  /* Form validation styles */
+  .is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+  }
+
+  .invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #dc3545;
+  }
+
+  /* Loading state */
+  .btn-search.loading {
+    position: relative;
+    color: transparent;
+  }
+
+  .btn-search.loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .advanced-search-container {
+      padding: 1rem;
+    }
+
+    .search-form-card {
+      padding: 1.5rem;
+    }
+
+    .search-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .operator-select,
+    .field-select {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .term-label {
+      min-width: auto;
+      text-align: left;
+    }
+
+    .year-inputs-wrapper {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .year-separator {
+      margin-top: 0;
+      text-align: center;
+      order: 2;
+    }
+
+    .year-input-group {
+      order: 1;
+    }
+
+    .year-input-group:last-child {
+      order: 3;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .btn-search {
+      width: 100%;
+      justify-content: center;
+      padding: 1rem 2rem;
+    }
+
+    .field-label {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-title {
+      font-size: 1.75rem;
+    }
+
+    .page-description {
+      font-size: 1rem;
+    }
+
+    .search-form-card {
+      padding: 1.25rem;
+    }
+
+    .search-row {
+      padding: 1rem;
+    }
+  }
+
+  /* Enhanced focus styles for accessibility */
+  .operator-select:focus-visible,
+  .field-select:focus-visible,
+  .term-input:focus-visible,
+  .year-input:focus-visible {
+    outline: 2px solid var(--primary-teal);
+    outline-offset: 2px;
+  }
+
+  /* Custom select arrow styling */
+  .operator-select,
+  .field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231b7a8e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+  }
+
+  .dark .operator-select,
+  .dark .field-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234fd1c5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  }
+</style>
+
+<div class="advanced-search-container">
+  <div class="page-header">
+    <h1 class="page-title">{{ _('Advanced Search') }}</h1>
+    <p class="page-description">
+      {{ _('Construct a detailed query to find exactly what you need') }}
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="search-form-card">
+    <form method="POST" action="" novalidate id="advanced-search-form">
+      {{ form.hidden_tag() }}
+
+      <!-- First Search Row -->
+      <div class="search-row">
+        <span class="term-label">{{ form.term1.label }}</span>
+        {{ form.term1(class="term-input", placeholder=_('Enter search term...'))
+        }} {% if form.term1.errors %}
+        <div class="invalid-feedback">
+          {% for error in form.term1.errors %} {{ error }} {% endfor %}
+        </div>
+        {% endif %}
+        <span class="field-label">{{ form.field1.label }}</span>
+        {{ form.field1(class="field-select") }}
+      </div>
+
+      <!-- Second Search Row -->
+      <div class="search-row">
+        {{ form.op2(class="operator-select") }}
+        <span class="term-label">{{ form.term2.label }}</span>
+        {{ form.term2(class="term-input", placeholder=_('Enter search term...'))
+        }} {% if form.term2.errors %}
+        <div class="invalid-feedback">
+          {% for error in form.term2.errors %} {{ error }} {% endfor %}
+        </div>
+        {% endif %}
+        <span class="field-label">{{ form.field2.label }}</span>
+        {{ form.field2(class="field-select") }}
+      </div>
+
+      <!-- Third Search Row -->
+      <div class="search-row">
+        {{ form.op3(class="operator-select") }}
+        <span class="term-label">{{ form.term3.label }}</span>
+        {{ form.term3(class="term-input", placeholder=_('Enter search term...'))
+        }} {% if form.term3.errors %}
+        <div class="invalid-feedback">
+          {% for error in form.term3.errors %} {{ error }} {% endfor %}
+        </div>
+        {% endif %}
+        <span class="field-label">{{ form.field3.label }}</span>
+        {{ form.field3(class="field-select") }}
+      </div>
+
+      <!-- Year Range Section -->
+      <div class="year-range-section">
+        <h3 class="section-title">{{ _('Publication Year Range') }}</h3>
+        <div class="year-inputs-wrapper">
+          <div class="year-input-group">
+            <label class="year-input-label">{{ form.start_year.label }}</label>
+            {{ form.start_year(class="year-input", placeholder=_('e.g. 2000'))
+            }} {% if form.start_year.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.start_year.errors %} {{ error }} {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          <span class="year-separator">{{ _('to') }}</span>
+          <div class="year-input-group">
+            <label class="year-input-label">{{ form.end_year.label }}</label>
+            {{ form.end_year(class="year-input", placeholder=_('e.g. 2024')) }}
+            {% if form.end_year.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.end_year.errors %} {{ error }} {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="submit-section">
+        {{ form.submit(class="btn btn-search", id="search-button") }}
+        <button
+          type="reset"
+          class="btn btn-outline-secondary ms-2"
+          style="padding: 1rem 2rem; border-radius: 12px"
+        >
+          {{ _('Clear Form') }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Help Text Section -->
+    <div class="help-text">
+      <div class="help-title">
+        <i class="fas fa-lightbulb"></i>{{ _('Search Tips') }}
+      </div>
+      <div class="help-content">
+        <ul>
+          <li>
+            <strong>AND</strong> - {{ _('Both terms must appear (narrows
+            results)') }}
+          </li>
+          <li>
+            <strong>OR</strong> - {{ _('Either term can appear (broadens
+            results)') }}
+          </li>
+          <li>
+            <strong>NOT</strong> - {{ _('Excludes the term from results') }}
+          </li>
+          <li>{{ _('Use specific terms for better results') }}</li>
+          <li>{{ _('Combine multiple rows for precise searches') }}</li>
+          <li>{{ _('Leave fields empty to ignore them in search') }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("advanced-search-form");
+    const searchButton = document.getElementById("search-button");
+
+    // Form submission handler
+    form.addEventListener("submit", function () {
+      searchButton.classList.add("loading");
+      searchButton.disabled = true;
+    });
+
+    // Clear form functionality
+    const clearButton = form.querySelector('button[type="reset"]');
+    clearButton.addEventListener("click", function () {
+      // Clear all inputs
+      const inputs = form.querySelectorAll(
+        'input[type="text"], input[type="number"]'
+      );
+      inputs.forEach((input) => {
+        input.value = "";
+        input.classList.remove("is-invalid");
+      });
+
+      // Reset selects to first option
+      const selects = form.querySelectorAll("select");
+      selects.forEach((select) => {
+        select.selectedIndex = 0;
+      });
+
+      // Clear validation messages
+      const errorMessages = form.querySelectorAll(".invalid-feedback");
+      errorMessages.forEach((error) => error.remove());
+    });
+
+    // Real-time validation
+    const inputs = form.querySelectorAll(
+      'input[type="text"], input[type="number"]'
+    );
+    inputs.forEach((input) => {
+      input.addEventListener("blur", function () {
+        if (this.value.trim() !== "" && this.checkValidity) {
+          if (!this.checkValidity()) {
+            this.classList.add("is-invalid");
+          } else {
+            this.classList.remove("is-invalid");
+          }
+        }
+      });
+    });
+
+    // Year range validation
+    const startYear = document.getElementById("{{ form.start_year.id }}");
+    const endYear = document.getElementById("{{ form.end_year.id }}");
+
+    function validateYearRange() {
+      if (startYear.value && endYear.value) {
+        if (parseInt(startYear.value) > parseInt(endYear.value)) {
+          startYear.classList.add("is-invalid");
+          endYear.classList.add("is-invalid");
+
+          // Create or update error message
+          let errorMessage =
+            startYear.parentNode.querySelector(".year-range-error");
+          if (!errorMessage) {
+            errorMessage = document.createElement("div");
+            errorMessage.className = "invalid-feedback year-range-error";
+            errorMessage.textContent =
+              '{{ _("Start year cannot be after end year") }}';
+            startYear.parentNode.appendChild(errorMessage);
+          }
+        } else {
+          startYear.classList.remove("is-invalid");
+          endYear.classList.remove("is-invalid");
+          const errorMessage =
+            startYear.parentNode.querySelector(".year-range-error");
+          if (errorMessage) {
+            errorMessage.remove();
+          }
+        }
+      }
+    }
+
+    if (startYear && endYear) {
+      startYear.addEventListener("change", validateYearRange);
+      endYear.addEventListener("change", validateYearRange);
+    }
+  });
+</script>
+{% endblock %}

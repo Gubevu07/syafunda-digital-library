@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Search Results for '%(query)s'", query=query) }}{% endblock %}
+
+{% block content %}
+<style>
+  /* Your existing styles are perfectly fine, no changes needed here */
+  .search-container { display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem; margin-bottom: 3rem; }
+  .filters-sidebar { position: sticky; top: 100px; height: fit-content; background: var(--card-bg); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); }
+  .filters-sidebar h4 { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-light); }
+  .filters-sidebar h5 { font-weight: 700; font-size: 1rem; color: var(--text-dark); margin-top: 1.5rem; }
+  .results-area { min-height: 500px; }
+  .results-header { background: linear-gradient(135deg, rgba(27, 122, 142, 0.05) 0%, rgba(13, 74, 88, 0.08) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; }
+  .search-query-display { font-size: 1.8rem; font-weight: 700; color: var(--primary-dark); }
+  .dark .search-query-display { color: var(--primary-teal); }
+  .search-query-highlight { color: var(--primary-teal); }
+  .results-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem 1.5rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); flex-wrap: wrap; gap: 1rem; }
+  .results-count { font-size: 1rem; color: var(--text-dark); font-weight: 600; }
+  .sort-controls { display: flex; align-items: center; gap: 0.75rem; }
+  .sort-label { font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
+  .sort-select { padding: 0.6rem 2.5rem 0.6rem 1rem; border: 2px solid var(--border-light); border-radius: 10px; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); background-color: var(--card-bg); cursor: pointer; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 16px 12px; transition: all 0.3s ease; }
+  .dark .sort-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23adb5bd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); }
+  .sort-select:focus, .sort-select:hover { outline: none; border-color: var(--primary-teal); }
+  .empty-state { text-align: center; padding: 4rem 2rem; background: var(--light-bg); border-radius: 16px; margin: 3rem 0; }
+  .empty-icon { font-size: 5rem; margin-bottom: 1.5rem; opacity: 0.5; }
+  .empty-title { font-size: 1.8rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem; }
+  .empty-text { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .card-title a:hover { color: var(--primary-teal); }
+</style>
+
+<div class="search-container">
+  <aside class="filters-sidebar">
+    <h4>{{ _('Refine Search') }}</h4>
+    
+    {% set is_advanced = (query == 'Advanced Search' and advanced_params_for_url) %}
+    
+    <form method="GET" action="{{ url_for('main.advanced_search') if is_advanced else url_for('main.search') }}">
+      
+      {% if is_advanced %}
+        {# For advanced search, pass original criteria as hidden fields #}
+        {% for key, value in advanced_params_for_url.items() %}
+          {% if value %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
+        {% endfor %}
+      {% else %}
+        {# For simple search, just pass the query text #}
+        <input type="hidden" name="q" value="{{ query }}" />
+      {% endif %}
+
+      <details open>
+        <summary style="font-weight: bold; cursor: pointer; margin-bottom: 5px;">{{ _('Resource Type') }}</summary>
+        {% for type in all_types %}
+        <div class="form-check" style="padding-left: 30px">
+          <input class="form-check-input" type="checkbox" name="type" value="{{ type }}" id="type-{{ type }}" {% if type in active_types %}checked{% endif %}/>
+          <label class="form-check-label" for="type-{{ type }}">{{ type }} ({{ type_counts.get(type, 0) }})</label>
+        </div>
+        {% endfor %}
+      </details>
+      <hr />
+
+      <details open>
+        <summary style="font-weight: bold; cursor: pointer; margin-bottom: 5px;">{{ _('Category') }}</summary>
+        {% for category in all_categories %}
+        <div class="form-check" style="padding-left: 30px">
+            <input class="form-check-input" type="checkbox" name="cat" value="{{ category.id }}" id="cat-{{ category.id }}" {% if category.id|string in active_categories %}checked{% endif %}/>
+            <label class="form-check-label" for="cat-{{ category.id }}">{{ category.name }} ({{ category_counts.get(category.id, 0) }})</label>
+        </div>
+        {% endfor %}
+      </details>
+      <hr />
+
+      <details open>
+        <summary style="font-weight: bold; cursor: pointer; margin-bottom: 5px;">{{ _('Language') }}</summary>
+        {% for lang in all_langs %}
+        <div class="form-check" style="padding-left: 30px">
+          <input class="form-check-input" type="checkbox" name="lang" value="{{ lang }}" id="lang-{{ lang }}" {% if lang in active_langs %}checked{% endif %}/>
+          <label class="form-check-label" for="lang-{{ lang }}">{{ lang }} ({{ lang_counts.get(lang, 0) }})</label>
+        </div>
+        {% endfor %}
+      </details>
+      <hr />
+
+      <h5>{{ _('Year Range') }}</h5>
+      <div class="d-flex align-items-center">
+        <input type="number" name="start_year" placeholder="{{ _('From') }}" class="form-control" value="{{ start_year or '' }}"/>
+        <span class="mx-2">-</span>
+        <input type="number" name="end_year" placeholder="{{ _('To') }}" class="form-control" value="{{ end_year or '' }}"/>
+      </div>
+      <hr />
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">{{ _('Apply Filters') }}</button>
+        {% if is_advanced %}
+          <a href="{{ url_for('main.advanced_search', **advanced_params_for_url) }}" class="btn btn-outline-secondary">{{ _('Clear all filters') }}</a>
+        {% else %}
+          <a href="{{ url_for('main.search', q=query) }}" class="btn btn-outline-secondary">{{ _('Clear all filters') }}</a>
+        {% endif %}
+      </div>
+    </form>
+  </aside>
+
+  <main class="results-area">
+    <div class="results-header">
+      <h2 class="search-query-display">
+        {{ _('Search Results for:') }} <span class="search-query-highlight">"{{ query }}"</span>
+      </h2>
+    </div>
+
+    {% if results %}
+    <div class="results-meta">
+      <p class="results-count">
+        <strong>{{ ngettext('%(total)s result found', '%(total)s results found', pagination.total, total=pagination.total) }}</strong> • {{ _('Showing page %(page)s of %(pages)s', page=pagination.page, pages=pagination.pages) }}
+      </p>
+      <div class="sort-controls">
+        <label for="sort-select" class="sort-label">{{ _('Sort by:') }}</label>
+        
+        {# Use the link_params from the advanced search view, or default to request.args for simple search #}
+        {% set base_params = (link_params or request.args).copy() %}
+        {% set dummy = base_params.pop('sort', None) %}
+        
+        <select id="sort-select" class="sort-select" onchange="window.location.href = this.value;">
+          {% if is_advanced %}
+            <option value="{{ url_for('main.advanced_search', sort='date_desc', **base_params) }}" {% if sort_by == 'date_desc' %}selected{% endif %}>{{ _('Date (Newest First)') }}</option>
+            <option value="{{ url_for('main.advanced_search', sort='date_asc', **base_params) }}" {% if sort_by == 'date_asc' %}selected{% endif %}>{{ _('Date (Oldest First)') }}</option>
+            <option value="{{ url_for('main.advanced_search', sort='title_asc', **base_params) }}" {% if sort_by == 'title_asc' %}selected{% endif %}>{{ _('Title (A-Z)') }}</option>
+            <option value="{{ url_for('main.advanced_search', sort='title_desc', **base_params) }}" {% if sort_by == 'title_desc' %}selected{% endif %}>{{ _('Title (Z-A)') }}</option>
+          {% else %}
+             <option value="{{ url_for('main.search', sort='date_desc', **base_params) }}" {% if sort_by == 'date_desc' %}selected{% endif %}>{{ _('Date (Newest First)') }}</option>
+             <option value="{{ url_for('main.search', sort='date_asc', **base_params) }}" {% if sort_by == 'date_asc' %}selected{% endif %}>{{ _('Date (Oldest First)') }}</option>
+             <option value="{{ url_for('main.search', sort='title_asc', **base_params) }}" {% if sort_by == 'title_asc' %}selected{% endif %}>{{ _('Title (A-Z)') }}</option>
+             <option value="{{ url_for('main.search', sort='title_desc', **base_params) }}" {% if sort_by == 'title_desc' %}selected{% endif %}>{{ _('Title (Z-A)') }}</option>
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for resource in results %}
+      <div class="col">
+        <div class="card h-100">
+          <a href="{{ url_for('main.resource_detail', resource_id=resource.id) }}">
+            {% if resource.preview_image %}
+            <img src="{{ url_for('main.serve_upload', filename=resource.preview_image) }}" class="card-img-top" alt="{{ _('Preview of %(title)s', title=resource.title) }}" style="height: 250px; object-fit: cover"/>
+            {% else %}
+            <img src="https://via.placeholder.com/400x500.png?text=No+Image" class="card-img-top" alt="{{ _('No preview available') }}" style="height: 250px; object-fit: cover"/>
+            {% endif %}
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{{ url_for('main.resource_detail', resource_id=resource.id) }}" class="text-decoration-none">{{ resource.title }}</a>
+            </h5>
+            <p class="card-text">
+              <small class="text-muted">{{ _('by %(creator)s', creator=resource.creator) }}</small>
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-top-0 pb-3">
+             </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% for page_num in pagination.iter_pages() %}
+              <li class="page-item {% if pagination.page == page_num %}active{% endif %} {% if not page_num %}disabled{% endif %}">
+                  {% if is_advanced %}
+                    <a class="page-link" href="{{ url_for('main.advanced_search', page=page_num, **base_params) if page_num else '#' }}">
+                        {{ page_num if page_num else '...' }}
+                    </a>
+                  {% else %}
+                    <a class="page-link" href="{{ url_for('main.search', page=page_num, **base_params) if page_num else '#'}}">
+                        {{ page_num if page_num else '...' }}
+                    </a>
+                  {% endif %}
+              </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h2 class="empty-title">{{ _('No Results Found') }}</h2>
+      <p class="empty-text">
+        {{ _('No resources found matching your search term and filters.<br>Try adjusting your filters or search with different keywords.')|safe }}
+      </p>
+      <a href="{{ url_for('main.browse') }}" class="btn btn-primary">
+        {{ _('Browse All Resources') }}
+      </a>
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

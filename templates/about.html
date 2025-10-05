@@ -1,0 +1,574 @@
+{% extends "base.html" %} {% block title %}{{ _('About') }} - {{ _('Siyafunda
+Digital Library') }}{% endblock %} {% block content %}
+<div class="about-container">
+  <!-- Header Section -->
+  <section class="about-header">
+    <div class="header-content">
+      <div class="about-logo">📚</div>
+      <h1 class="about-title">{{ _('Siyafunda Digital Library') }}</h1>
+      <p class="about-tagline">
+        {{ _('Empowering Learning Through Digital Access') }}
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission & Vision Section -->
+  <section class="mission-vision-section">
+    <div class="mv-container">
+      <div class="mv-card vision-card">
+        <div class="mv-icon">🔭</div>
+        <h2 class="mv-title">{{ _('Our Vision') }}</h2>
+        <p class="mv-text">
+          {{ _('To revolutionize knowledge access and ignite a passion for
+          reading and research in the digital age, by seamlessly digitizing and
+          disseminating information through diverse digital resources,
+          empowering a global community of learners.') }}
+        </p>
+      </div>
+
+      <div class="mv-card mission-card">
+        <div class="mv-icon">🎯</div>
+        <h2 class="mv-title">{{ _('Our Mission') }}</h2>
+        <p class="mv-text">
+          {{ _('Our mission is to provide accessible, innovative, and inclusive
+          digital resources that empower communities with knowledge and lifelong
+          learning opportunities.') }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values Section -->
+  <section class="values-section">
+    <h2 class="section-heading">{{ _('Our Core Values') }}</h2>
+    <div class="values-grid">
+      <div class="value-item">
+        <div class="value-icon">♿</div>
+        <h3>{{ _('Accessibility') }}</h3>
+        <p>
+          {{ _('Ensuring everyone can access knowledge regardless of physical
+          location or ability.') }}
+        </p>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">💡</div>
+        <h3>{{ _('Innovation') }}</h3>
+        <p>
+          {{ _('Continuously improving our platform with cutting-edge technology
+          and user feedback.') }}
+        </p>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🤲</div>
+        <h3>{{ _('Inclusivity') }}</h3>
+        <p>
+          {{ _('Supporting multilingual content and diverse perspectives to
+          serve our entire community.') }}
+        </p>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">⭐</div>
+        <h3>{{ _('Excellence') }}</h3>
+        <p>
+          {{ _('Maintaining high standards in resource curation, metadata
+          quality, and user experience.') }}
+        </p>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🔒</div>
+        <h3>{{ _('Integrity') }}</h3>
+        <p>
+          {{ _('Respecting intellectual property rights while promoting open
+          access to knowledge.') }}
+        </p>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">📈</div>
+        <h3>{{ _('Growth') }}</h3>
+        <p>
+          {{ _('Supporting continuous learning and personal development for all
+          users.') }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact/Join Section -->
+  <section class="join-section">
+    <div class="join-content">
+      <h2>{{ _('Join Our Learning Community') }}</h2>
+      <p>
+        {{ _("Whether you're a student seeking academic resources, a researcher
+        looking for the latest journals, or simply someone passionate about
+        learning, Siyafunda Digital Library is here to support your journey.")
+        }}
+      </p>
+      <div class="join-buttons">
+        <a href="{{ url_for('auth.register') }}" class="btn btn-join">
+          {{ _('Get Started Today') }}
+        </a>
+        <a href="{{ url_for('main.browse') }}" class="btn btn-browse">
+          {{ _('Browse Resources') }}
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .about-container {
+    width: 100%;
+    color: var(--text-dark);
+  }
+
+  /* Header Section */
+  .about-header {
+    background: linear-gradient(
+      135deg,
+      var(--primary-dark) 0%,
+      var(--primary-teal) 100%
+    );
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin: -2rem -2rem 3rem -2rem;
+  }
+
+  .header-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .about-logo {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+  }
+
+  .about-title {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .about-tagline {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    font-weight: 400;
+  }
+
+  /* Mission & Vision Section */
+  .mission-vision-section {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+  }
+
+  .mv-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .mv-card {
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+  }
+
+  .vision-card {
+    border-color: var(--primary-teal);
+  }
+
+  .mission-card {
+    border-color: var(--primary-dark);
+  }
+
+  .mv-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mv-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mv-title {
+    font-size: 2rem;
+    color: var(--heading-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .mv-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+  }
+
+  /* Core Values Section */
+  .values-section {
+    background: var(--light-bg);
+    padding: 4rem 2rem;
+    margin: 4rem 0;
+  }
+
+  .section-heading {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--heading-color);
+    margin-bottom: 3rem;
+    font-weight: 600;
+  }
+
+  .values-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .value-item {
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-teal);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+  }
+
+  .value-item:hover {
+    border-left-width: 8px;
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-item h3 {
+    color: var(--heading-color);
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
+
+  .value-item p {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Join Section */
+  .join-section {
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .join-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .join-content h2 {
+    font-size: 2.3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .join-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+  }
+
+  .join-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-join {
+    background: white;
+    color: var(--primary-dark);
+  }
+
+  .btn-join:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    color: var(--primary-dark);
+    text-decoration: none;
+  }
+
+  .btn-browse {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .btn-browse:hover {
+    background: white;
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  /* Dark mode specific adjustments */
+  .dark .values-section {
+    background: var(--light-bg);
+  }
+
+  .dark .mv-card {
+    background: var(--card-bg);
+  }
+
+  .dark .value-item {
+    background: var(--card-bg);
+  }
+
+  .dark .mv-text,
+  .dark .value-item p {
+    color: var(--text-dark);
+  }
+
+  .dark .mv-title,
+  .dark .section-heading,
+  .dark .value-item h3 {
+    color: var(--heading-color);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .about-header {
+      padding: 3rem 1rem;
+      margin: -1rem -1rem 2rem -1rem;
+    }
+
+    .about-title {
+      font-size: 2rem;
+    }
+
+    .about-tagline {
+      font-size: 1.1rem;
+    }
+
+    .mission-vision-section {
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .mv-container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .mv-card {
+      padding: 2rem;
+    }
+
+    .mv-title {
+      font-size: 1.6rem;
+    }
+
+    .mv-text {
+      font-size: 1rem;
+    }
+
+    .values-section {
+      padding: 2rem 1rem;
+      margin: 2rem 0;
+    }
+
+    .section-heading {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .values-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .value-item {
+      padding: 1.5rem;
+    }
+
+    .join-section {
+      padding: 2rem 1rem;
+    }
+
+    .join-content h2 {
+      font-size: 1.8rem;
+    }
+
+    .join-content p {
+      font-size: 1rem;
+    }
+
+    .join-buttons {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-title {
+      font-size: 1.75rem;
+    }
+
+    .about-logo {
+      font-size: 3rem;
+    }
+
+    .mv-card {
+      padding: 1.5rem;
+    }
+
+    .mv-icon {
+      font-size: 3rem;
+    }
+
+    .value-icon {
+      font-size: 2rem;
+    }
+
+    .join-content h2 {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Animation enhancements */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mv-card,
+  .value-item {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .mv-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .mv-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .value-item:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .value-item:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .value-item:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .value-item:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .value-item:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+  .value-item:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+
+  /* Focus styles for accessibility */
+  .btn:focus-visible {
+    outline: 2px solid var(--primary-teal);
+    outline-offset: 2px;
+  }
+
+  .value-item:focus-within {
+    outline: 2px solid var(--primary-teal);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add intersection observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+        }
+      });
+    }, observerOptions);
+
+    // Observe all cards and value items
+    const animatedElements = document.querySelectorAll(".mv-card, .value-item");
+    animatedElements.forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(20px)";
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      observer.observe(el);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

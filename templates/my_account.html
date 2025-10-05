@@ -1,0 +1,242 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  .account-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  .section-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .pagination-modern {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .pagination-modern .page-link {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    background: var(--card-bg);
+  }
+
+  .pagination-modern .page-item.active .page-link {
+    background: var(--primary-teal);
+    color: white;
+    border-color: var(--primary-teal);
+  }
+
+  .pagination-modern .page-link:hover {
+    background: var(--light-bg);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .search-history-item {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-dark);
+  }
+
+  .search-history-item:hover {
+    background: var(--light-bg);
+    transform: translateX(5px);
+    color: var(--primary-teal);
+  }
+</style>
+
+<div class="account-container">
+  <h2 class="mb-4">{{ _('My Account') }}</h2>
+
+  <div class="row">
+    <!-- Favorites Section -->
+    <div class="col-lg-8">
+      <div class="section-card">
+        <h4 class="section-header">
+          {{ _('My Favorite Resources') }} {% if favorites_pagination.total > 0
+          %}
+          <span class="badge bg-primary ms-2"
+            >{{ favorites_pagination.total }}</span
+          >
+          {% endif %}
+        </h4>
+
+        {% if favorites %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+          {% for resource in favorites %}
+          <div class="col">
+            <div class="card h-100">
+              <a
+                href="{{ url_for('main.resource_detail', resource_id=resource.id) }}"
+              >
+                {% if resource.preview_image %}
+                <img
+                  src="{{ url_for('main.serve_upload', filename=resource.preview_image) }}"
+                  class="card-img-top"
+                  alt="{{ _('Preview of %(title)s', title=resource.title) }}"
+                  style="height: 250px; object-fit: cover"
+                />
+                {% else %}
+                <img
+                  src="https://via.placeholder.com/400x500.png?text=No+Image"
+                  class="card-img-top"
+                  alt="{{ _('No preview available') }}"
+                  style="height: 250px; object-fit: cover"
+                />
+                {% endif %}
+              </a>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a
+                    href="{{ url_for('main.resource_detail', resource_id=resource.id) }}"
+                    class="text-dark text-decoration-none"
+                    >{{ resource.title }}</a
+                  >
+                </h5>
+                <p class="card-text">
+                  <small class="text-muted"
+                    >{{ _('by %(creator)s', creator=resource.creator) }}</small
+                  >
+                </p>
+              </div>
+              <div class="card-footer bg-transparent border-top-0 pb-3">
+                <form
+                  action="{{ url_for('user.remove_favorite', resource_id=resource.id) }}"
+                  method="POST"
+                  class="d-grid"
+                >
+                  <button type="submit" class="btn btn-outline-danger btn-sm">
+                    {{ _('Remove Favorite') }}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination for Favorites -->
+        {% if favorites_pagination.pages > 1 %}
+        <nav>
+          <ul class="pagination-modern">
+            {% if favorites_pagination.has_prev %}
+            <li class="page-item">
+              <a
+                class="page-link"
+                href="{{ url_for('user.my_account', page=favorites_pagination.prev_num) }}"
+              >
+                &laquo; {{ _('Previous') }}
+              </a>
+            </li>
+            {% endif %} {% for page_num in
+            favorites_pagination.iter_pages(left_edge=1, right_edge=1,
+            left_current=1, right_current=2) %} {% if page_num %}
+            <li
+              class="page-item {% if favorites_pagination.page == page_num %}active{% endif %}"
+            >
+              <a
+                class="page-link"
+                href="{{ url_for('user.my_account', page=page_num) }}"
+                >{{ page_num }}</a
+              >
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">...</span>
+            </li>
+            {% endif %} {% endfor %} {% if favorites_pagination.has_next %}
+            <li class="page-item">
+              <a
+                class="page-link"
+                href="{{ url_for('user.my_account', page=favorites_pagination.next_num) }}"
+              >
+                {{ _('Next') }} &raquo;
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %} {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">💫</div>
+          <p>
+            {{ _('You have not saved any favorite resources yet.') }}<br />
+            {{ _('You can add favorites from the Browse or Search pages.') }}
+          </p>
+          <a href="{{ url_for('main.browse') }}" class="btn btn-primary mt-3">
+            {{ _('Browse Resources') }}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Search History Section -->
+    <div class="col-lg-4">
+      <div class="section-card">
+        <h4 class="section-header">{{ _('Recent Search History') }}</h4>
+
+        {% if search_history %}
+        <div>
+          {% for search in search_history %}
+          <a
+            href="{{ url_for('main.search', q=search.query_text) }}"
+            class="search-history-item"
+          >
+            <span>{{ search.query_text }}</span>
+            <small class="text-muted"
+              >{{ search.search_date.strftime('%b %d') }}</small
+            >
+          </a>
+          {% endfor %}
+        </div>
+        <p class="text-muted mt-3 mb-0" style="font-size: 0.85rem">
+          <em>{{ _('Showing your last 10 searches') }}</em>
+        </p>
+        {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <p>{{ _('You have no recent search history.') }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

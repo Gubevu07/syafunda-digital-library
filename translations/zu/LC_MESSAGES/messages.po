@@ -1,0 +1,1304 @@
+# Zulu translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-10-04 07:40+0200\n"
+"PO-Revision-Date: 2025-10-03 20:25+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zu\n"
+"Language-Team: zu <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: routes/admin.py:59
+#, fuzzy
+msgid "Admin Dashboard"
+msgstr "Ideshibhodi"
+
+#: routes/admin.py:123
+msgid "Invalid report type."
+msgstr ""
+
+#: routes/admin.py:134
+msgid "There was an error generating the PDF report."
+msgstr ""
+
+#: routes/admin.py:181
+msgid "New resource uploaded successfully!"
+msgstr ""
+
+#: routes/admin.py:184 templates/admin/dashboard.html:428
+msgid "Upload Resource"
+msgstr ""
+
+#: routes/admin.py:229
+msgid "Resource has been updated!"
+msgstr ""
+
+#: routes/admin.py:236 templates/edit_resource.html:325
+msgid "Edit Resource"
+msgstr ""
+
+#: routes/admin.py:247
+msgid "Resource has been deleted."
+msgstr ""
+
+#: routes/admin.py:257
+msgid "You cannot deactivate your own account."
+msgstr ""
+
+#: routes/admin.py:264
+#, python-format
+msgid "User %(username)s has been activated."
+msgstr ""
+
+#: routes/admin.py:267
+#, python-format
+msgid "User %(username)s has been deactivated."
+msgstr ""
+
+#: routes/admin.py:282
+#, python-format
+msgid "Category \"%(name)s\" has been added."
+msgstr ""
+
+#: routes/admin.py:288
+#, python-format
+msgid "Error in %(field_label)s: %(error)s"
+msgstr ""
+
+#: routes/admin.py:299
+#, python-format
+msgid "Category \"%(name)s\" has been deleted."
+msgstr ""
+
+#: routes/auth.py:29
+msgid "Your account has been created! You are now able to log in."
+msgstr ""
+
+#: routes/auth.py:32 templates/base.html:466
+msgid "Register"
+msgstr "Bhalisa"
+
+#: routes/auth.py:46
+msgid "This account has been deactivated."
+msgstr ""
+
+#: routes/auth.py:53
+msgid "Login Unsuccessful. Please check your email and password."
+msgstr ""
+
+#: routes/auth.py:55 templates/login.html:35 templates/register.html:93
+msgid "Sign In"
+msgstr ""
+
+#: routes/auth.py:68
+msgid "Password Reset Request"
+msgstr ""
+
+#: routes/auth.py:71
+msgid "To reset your password, visit the following link:"
+msgstr ""
+
+#: routes/auth.py:74
+msgid ""
+"If you did not make this request then simply ignore this email and no "
+"changes will be made."
+msgstr ""
+
+#: routes/auth.py:87
+msgid "An email has been sent with instructions to reset your password."
+msgstr ""
+
+#: routes/auth.py:89 routes/auth.py:108
+msgid "Reset Password"
+msgstr ""
+
+#: routes/auth.py:98
+msgid "That is an invalid or expired token"
+msgstr ""
+
+#: routes/auth.py:106
+msgid "Your password has been updated! You are now able to log in"
+msgstr ""
+
+#: routes/user.py:16 templates/base.html:450 templates/my_account.html:3
+msgid "My Account"
+msgstr "I-akhawunti yami"
+
+#: routes/user.py:26
+msgid "Resource added to your favorites!"
+msgstr ""
+
+#: routes/user.py:37
+msgid "Resource removed from your favorites."
+msgstr ""
+
+#: templates/advanced_search.html:1 templates/advanced_search.html:304
+#, fuzzy
+msgid "Advanced Search"
+msgstr "Okuthuthukile"
+
+#: templates/advanced_search.html:306
+msgid "Construct a detailed query to find exactly what you need"
+msgstr ""
+
+#: templates/advanced_search.html:318 templates/advanced_search.html:327
+#: templates/advanced_search.html:336
+#, fuzzy
+msgid "Enter search term..."
+msgstr "Sesha..."
+
+#: templates/advanced_search.html:343
+msgid "Publication Year"
+msgstr ""
+
+#: templates/advanced_search.html:347
+msgid "e.g. 2000"
+msgstr ""
+
+#: templates/advanced_search.html:350
+msgid "to"
+msgstr ""
+
+#: templates/advanced_search.html:353
+msgid "e.g. 2024"
+msgstr ""
+
+#: templates/advanced_search.html:364
+#, fuzzy
+msgid "Search Tips"
+msgstr "Sesha"
+
+#: templates/advanced_search.html:368
+msgid ""
+"Both terms must appear (narrows\n"
+"            results)"
+msgstr ""
+
+#: templates/advanced_search.html:372
+msgid ""
+"Either term can appear (broadens\n"
+"            results)"
+msgstr ""
+
+#: templates/advanced_search.html:376
+msgid "Excludes the term from results"
+msgstr ""
+
+#: templates/advanced_search.html:378
+msgid "Use specific terms for better results"
+msgstr ""
+
+#: templates/advanced_search.html:379
+msgid "Combine multiple rows for precise searches"
+msgstr ""
+
+#: templates/base.html:7 templates/base.html:491
+msgid "Siyafunda Digital Library"
+msgstr "Umtapo Wezincwadi Wedijithali iSiyafunda"
+
+#: templates/base.html:364
+msgid "Siyafunda Library"
+msgstr "Umtapo Wezincwadi iSiyafunda"
+
+#: templates/base.html:378 templates/edit_resource.html:320
+#: templates/resource_detail.html:296
+msgid "Home"
+msgstr "Ekhaya"
+
+#: templates/admin/dashboard.html:593 templates/base.html:383
+#: templates/resource_detail.html:298
+msgid "Browse"
+msgstr "Dlulisa amehlo"
+
+#: templates/base.html:387
+msgid "About"
+msgstr "Mayelana"
+
+#: templates/base.html:422
+msgid "Search..."
+msgstr "Sesha..."
+
+#: templates/base.html:427
+msgid "Search"
+msgstr "Sesha"
+
+#: templates/base.html:432
+msgid "Advanced"
+msgstr "Okuthuthukile"
+
+#: templates/admin/dashboard.html:421 templates/base.html:444
+#: templates/edit_resource.html:322
+msgid "Dashboard"
+msgstr "Ideshibhodi"
+
+#: templates/base.html:455
+msgid "Logout"
+msgstr "Phuma"
+
+#: templates/base.html:461
+msgid "Login"
+msgstr "Ngena"
+
+#: templates/browse.html:1
+#, fuzzy
+msgid "Browse Library"
+msgstr "Dlulisa amehlo"
+
+#: templates/browse.html:317
+msgid "Browse Our Collection"
+msgstr ""
+
+#: templates/browse.html:319
+msgid ""
+"Explore thousands of digital resources across multiple subjects and\n"
+"    formats"
+msgstr ""
+
+#: templates/browse.html:334 templates/my_account.html:20
+#: templates/resource_detail.html:320 templates/search_results.html:212
+#, python-format
+msgid "Preview of %(title)s"
+msgstr ""
+
+#: templates/browse.html:340 templates/my_account.html:27
+#: templates/resource_detail.html:326 templates/search_results.html:214
+msgid "No preview available"
+msgstr ""
+
+#: templates/browse.html:356 templates/my_account.html:42
+#: templates/search_results.html:222
+#, python-format
+msgid "by %(creator)s"
+msgstr ""
+
+#: templates/browse.html:365
+msgid "Download Resource"
+msgstr ""
+
+#: templates/browse.html:375 templates/resource_detail.html:365
+msgid "Remove from Favorites"
+msgstr ""
+
+#: templates/browse.html:384 templates/resource_detail.html:389
+msgid "Add to Favorites"
+msgstr ""
+
+#: templates/admin/dashboard.html:601 templates/admin/dashboard.html:681
+#: templates/browse.html:393
+msgid "Edit"
+msgstr ""
+
+#: templates/browse.html:397
+msgid "Are you sure you want to delete this resource?"
+msgstr ""
+
+#: templates/admin/dashboard.html:687 templates/browse.html:400
+msgid "Delete"
+msgstr ""
+
+#: templates/browse.html:435
+msgid "No Resources Yet"
+msgstr ""
+
+#: templates/browse.html:437
+msgid ""
+"There are no resources in the library at the moment. Check back\n"
+"    soon!"
+msgstr ""
+
+#: templates/edit_resource.html:331
+msgid "Edit Resource:"
+msgstr ""
+
+#: templates/edit_resource.html:335
+msgid "Update the resource information and files"
+msgstr ""
+
+#: templates/edit_resource.html:346 templates/upload.html:311
+msgid "Basic Information"
+msgstr ""
+
+#: templates/edit_resource.html:391 templates/upload.html:363
+msgid "Publication Details"
+msgstr ""
+
+#: templates/edit_resource.html:416
+msgid "Update Files"
+msgstr ""
+
+#: templates/edit_resource.html:422
+msgid "Update Cover Image"
+msgstr ""
+
+#: templates/edit_resource.html:423 templates/edit_resource.html:437
+#: templates/upload.html:398
+msgid "Optional"
+msgstr ""
+
+#: templates/edit_resource.html:426
+msgid "Upload a new cover image to replace the existing one"
+msgstr ""
+
+#: templates/edit_resource.html:436
+msgid "Update Resource File"
+msgstr ""
+
+#: templates/edit_resource.html:440
+msgid "Upload a new file to replace the existing document"
+msgstr ""
+
+#: templates/edit_resource.html:449 templates/upload.html:424
+msgid "Note:"
+msgstr ""
+
+#: templates/edit_resource.html:449
+msgid ""
+"Leave file fields empty if you\n"
+"          don't want to replace the existing files. Only upload new files"
+" if you\n"
+"          need to update them."
+msgstr ""
+
+#: templates/edit_resource.html:456
+msgid "Update Resource"
+msgstr ""
+
+#: templates/edit_resource.html:458
+msgid "Cancel"
+msgstr ""
+
+#: templates/login.html:36
+msgid "Welcome back to the library"
+msgstr ""
+
+#: templates/login.html:62
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/my_account.html:5
+msgid "My Favorite Resources"
+msgstr ""
+
+#: templates/my_account.html:53
+msgid "Remove Favorite"
+msgstr ""
+
+#: templates/my_account.html:63
+msgid ""
+"You have not saved any favorite resources yet. You can add favorites\n"
+"    from the Browse or Search pages."
+msgstr ""
+
+#: templates/register.html:35
+msgid "Create an Account"
+msgstr ""
+
+#: templates/register.html:37
+msgid "Join the Siyafunda community"
+msgstr ""
+
+#: templates/register.html:65
+msgid ""
+"At least 8 characters, with one uppercase, one lowercase,\n"
+"              and one number."
+msgstr ""
+
+#: templates/register.html:91
+msgid "Already have an account?"
+msgstr ""
+
+#: templates/resource_detail.html:308
+msgid "by"
+msgstr ""
+
+#: templates/resource_detail.html:347
+msgid "Download Now"
+msgstr ""
+
+#: templates/resource_detail.html:398
+msgid "Description"
+msgstr ""
+
+#: templates/resource_detail.html:411
+msgid "Resource Information"
+msgstr ""
+
+#: templates/resource_detail.html:414 templates/search_results.html:136
+msgid "Resource Type"
+msgstr ""
+
+#: templates/resource_detail.html:419 templates/search_results.html:158
+msgid "Language"
+msgstr ""
+
+#: templates/resource_detail.html:424
+msgid "Format"
+msgstr ""
+
+#: templates/resource_detail.html:429
+msgid "Publisher"
+msgstr ""
+
+#: templates/resource_detail.html:434
+msgid "Publication Date"
+msgstr ""
+
+#: templates/resource_detail.html:437
+msgid "Not specified"
+msgstr ""
+
+#: templates/resource_detail.html:442
+msgid "Rights"
+msgstr ""
+
+#: templates/search_results.html:2
+#, python-format
+msgid "Search Results for '%(query)s'"
+msgstr ""
+
+#: templates/search_results.html:131
+#, fuzzy
+msgid "Refine Search"
+msgstr "Sesha"
+
+#: templates/search_results.html:147
+msgid "Category"
+msgstr ""
+
+#: templates/search_results.html:168
+msgid "Year Range"
+msgstr ""
+
+#: templates/search_results.html:170
+msgid "From"
+msgstr ""
+
+#: templates/search_results.html:172
+msgid "To"
+msgstr ""
+
+#: templates/search_results.html:177
+msgid "Apply Filters"
+msgstr ""
+
+#: templates/search_results.html:178
+msgid "Clear all filters"
+msgstr ""
+
+#: templates/search_results.html:186
+msgid "Search Results for:"
+msgstr ""
+
+#: templates/search_results.html:193
+#, python-format
+msgid "%(total)s result found"
+msgid_plural "%(total)s results found"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/search_results.html:193
+#, python-format
+msgid "Showing page %(page)s of %(pages)s"
+msgstr ""
+
+#: templates/search_results.html:196
+msgid "Sort by:"
+msgstr ""
+
+#: templates/search_results.html:198
+msgid "Date (Newest First)"
+msgstr ""
+
+#: templates/search_results.html:199
+msgid "Date (Oldest First)"
+msgstr ""
+
+#: templates/search_results.html:200
+msgid "Title (A-Z)"
+msgstr ""
+
+#: templates/search_results.html:201
+msgid "Title (Z-A)"
+msgstr ""
+
+#: templates/search_results.html:247
+msgid "No Results Found"
+msgstr ""
+
+#: templates/search_results.html:249
+msgid ""
+"No resources found matching your search term and filters.<br>Try "
+"adjusting your filters or search with different keywords."
+msgstr ""
+
+#: templates/search_results.html:252
+msgid "Browse All Resources"
+msgstr ""
+
+#: templates/upload.html:298
+msgid "Upload New Resource"
+msgstr ""
+
+#: templates/upload.html:300
+msgid "Add a new digital resource to the library collection"
+msgstr ""
+
+#: templates/upload.html:315
+msgid ""
+"Enter the full\n"
+"            title"
+msgstr ""
+
+#: templates/upload.html:321
+msgid ""
+"Author or\n"
+"            creator name"
+msgstr ""
+
+#: templates/upload.html:334
+msgid ""
+"Keywords,\n"
+"            separated by commas"
+msgstr ""
+
+#: templates/upload.html:341
+msgid "Provide a detailed description of the resource..."
+msgstr ""
+
+#: templates/upload.html:367
+msgid ""
+"Publishing\n"
+"            organization"
+msgstr ""
+
+#: templates/upload.html:378
+msgid ""
+"e.g., English,\n"
+"            isiZulu"
+msgstr ""
+
+#: templates/upload.html:384
+msgid ""
+"Copyright or\n"
+"            usage rights"
+msgstr ""
+
+#: templates/upload.html:391
+msgid "File Uploads"
+msgstr ""
+
+#: templates/upload.html:397
+msgid "Cover Image"
+msgstr ""
+
+#: templates/upload.html:401
+msgid "Upload a preview image (book cover, thumbnail, etc.)"
+msgstr ""
+
+#: templates/upload.html:411
+msgid "Resource File"
+msgstr ""
+
+#: templates/upload.html:412
+msgid "Required"
+msgstr ""
+
+#: templates/upload.html:415
+msgid "Upload the main document (PDF, EPUB, etc.)"
+msgstr ""
+
+#: templates/upload.html:424
+msgid ""
+"Supported formats include PDF\n"
+"          and EPUB. Maximum file size is 50MB per file."
+msgstr ""
+
+#: templates/admin/dashboard.html:423
+#, python-format
+msgid ""
+"Welcome back, %(username)s! Here's what's happening with your\n"
+"          library."
+msgstr ""
+
+#: templates/admin/dashboard.html:437
+msgid "Total Resources"
+msgstr ""
+
+#: templates/admin/dashboard.html:442
+msgid "Active Users"
+msgstr ""
+
+#: templates/admin/dashboard.html:447
+msgid "Total Downloads"
+msgstr ""
+
+#: templates/admin/dashboard.html:452
+msgid "Resource Categories"
+msgstr ""
+
+#: templates/admin/dashboard.html:459
+msgid "Download Analytics"
+msgstr ""
+
+#: templates/admin/dashboard.html:462
+msgid "Monthly"
+msgstr ""
+
+#: templates/admin/dashboard.html:465
+msgid "Weekly"
+msgstr ""
+
+#: templates/admin/dashboard.html:472
+msgid "All Types"
+msgstr ""
+
+#: templates/admin/dashboard.html:488
+msgid "Resource Distribution"
+msgstr ""
+
+#: templates/admin/dashboard.html:498
+msgid "Manage Categories"
+msgstr ""
+
+#: templates/admin/dashboard.html:502
+msgid "Add New Category"
+msgstr ""
+
+#: templates/admin/dashboard.html:510
+msgid ""
+"Category\n"
+"            Name"
+msgstr ""
+
+#: templates/admin/dashboard.html:517
+msgid "Existing Categories"
+msgstr ""
+
+#: templates/admin/dashboard.html:531
+msgid "Are you sure you want to delete this category?"
+msgstr ""
+
+#: templates/admin/dashboard.html:538
+msgid "No categories created yet."
+msgstr ""
+
+#: templates/admin/dashboard.html:549
+msgid "Recent Downloads"
+msgstr ""
+
+#: templates/admin/dashboard.html:567
+msgid "No downloads yet"
+msgstr ""
+
+#: templates/admin/dashboard.html:576
+msgid "Quick Actions"
+msgstr ""
+
+#: templates/admin/dashboard.html:581
+msgid "Upload"
+msgstr ""
+
+#: templates/admin/dashboard.html:589 templates/admin/dashboard.html:728
+msgid "Users"
+msgstr ""
+
+#: templates/admin/dashboard.html:618
+msgid "Manage Resources"
+msgstr ""
+
+#: templates/admin/dashboard.html:629
+msgid "Manage Users"
+msgstr ""
+
+#: templates/admin/dashboard.html:641
+msgid "Resources"
+msgstr ""
+
+#: templates/admin/dashboard.html:644 templates/admin/dashboard.html:740
+#, python-format
+msgid "%(count)s total"
+msgstr ""
+
+#: templates/admin/dashboard.html:650 templates/admin/dashboard.html:745
+msgid "Export PDF"
+msgstr ""
+
+#: templates/admin/dashboard.html:658
+msgid "Title"
+msgstr ""
+
+#: templates/admin/dashboard.html:659
+msgid "Creator"
+msgstr ""
+
+#: templates/admin/dashboard.html:660
+msgid "Type"
+msgstr ""
+
+#: templates/admin/dashboard.html:661
+msgid "Upload Date"
+msgstr ""
+
+#: templates/admin/dashboard.html:662 templates/admin/dashboard.html:758
+msgid "Actions"
+msgstr ""
+
+#: templates/admin/dashboard.html:685
+msgid "Delete this resource?"
+msgstr ""
+
+#: templates/admin/dashboard.html:698
+msgid "No resources found"
+msgstr ""
+
+#: templates/admin/dashboard.html:735
+msgid "All Users"
+msgstr ""
+
+#: templates/admin/dashboard.html:736
+msgid "Active Only"
+msgstr ""
+
+#: templates/admin/dashboard.html:737
+msgid "Inactive Only"
+msgstr ""
+
+#: templates/admin/dashboard.html:753
+msgid "ID"
+msgstr ""
+
+#: templates/admin/dashboard.html:754
+msgid "Username"
+msgstr ""
+
+#: templates/admin/dashboard.html:755
+msgid "Email"
+msgstr ""
+
+#: templates/admin/dashboard.html:756
+#, fuzzy
+msgid "Role"
+msgstr "Dlulisa amehlo"
+
+#: templates/admin/dashboard.html:757
+msgid "Status"
+msgstr ""
+
+#: templates/admin/dashboard.html:778
+msgid "Active"
+msgstr ""
+
+#: templates/admin/dashboard.html:778
+msgid "Inactive"
+msgstr ""
+
+#: templates/admin/dashboard.html:793
+msgid "Deactivate"
+msgstr ""
+
+#: templates/admin/dashboard.html:793
+msgid "Activate"
+msgstr ""
+
+#: templates/admin/dashboard.html:798
+msgid "Current User"
+msgstr ""
+
+#: templates/admin/dashboard.html:845
+msgid "Downloads"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_termui_impl.py:608
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_termui_impl.py:612
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1104
+#: venv/Lib/site-packages/click/core.py:1141
+#, python-brace-format
+msgid "{text} {deprecated_message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1160
+msgid "Options"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1222
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/core.py:1241
+#, python-brace-format
+msgid "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1425
+#, fuzzy
+msgid "Aborted!"
+msgstr "Mayelana"
+
+#: venv/Lib/site-packages/click/core.py:1799
+msgid "Commands"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1830
+msgid "Missing command."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1908
+#, python-brace-format
+msgid "No such command {name!r}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2332
+msgid "Value must be an iterable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2355
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/core.py:2505
+#, python-brace-format
+msgid ""
+"DeprecationWarning: The {param_type} {name!r} is "
+"deprecated.{extra_message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2956
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2959
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2963
+msgid "required"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:3023
+msgid "(dynamic)"
+msgstr ""
+
+#: venv/Lib/site-packages/click/decorators.py:465
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: venv/Lib/site-packages/click/decorators.py:522
+msgid "Show the version and exit."
+msgstr ""
+
+#: venv/Lib/site-packages/click/decorators.py:548
+msgid "Show this message and exit."
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:50
+#: venv/Lib/site-packages/click/exceptions.py:89
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:81
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:130
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:132
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:190
+msgid "Missing argument"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:192
+msgid "Missing option"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:194
+msgid "Missing parameter"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:196
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:203
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:223
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:235
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/exceptions.py:282
+msgid "unknown error"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:289
+#, python-brace-format
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/formatting.py:156
+msgid "Usage:"
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:199
+#, python-brace-format
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:381
+#, python-brace-format
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:444
+#, python-brace-format
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/shell_completion.py:332
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: venv/Lib/site-packages/click/shell_completion.py:339
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:162
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:178
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:180
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:191
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:247
+msgid "Error: invalid input"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:866
+msgid "Press any key to continue..."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:332
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:369
+#, python-brace-format
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/types.py:460
+#, python-brace-format
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/types.py:482
+#, python-brace-format
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:538
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:719
+#, python-brace-format
+msgid "{value!r} is not a valid boolean. Recognized values: {states}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:747
+#, python-brace-format
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:937
+msgid "file"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:939
+msgid "directory"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:941
+msgid "path"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:988
+#, python-brace-format
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:997
+#, python-brace-format
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:1005
+#, python-brace-format
+msgid "{name} {filename!r} is a directory."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:1014
+#, python-brace-format
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:1023
+#, python-brace-format
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:1032
+#, python-brace-format
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:1099
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/flask_wtf/file.py:55
+#: venv/Lib/site-packages/wtforms/validators.py:293
+#: venv/Lib/site-packages/wtforms/validators.py:323
+msgid "This field is required."
+msgstr ""
+
+#: venv/Lib/site-packages/flask_wtf/file.py:94
+#, python-brace-format
+msgid "File does not have an approved extension: {extensions}"
+msgstr ""
+
+#: venv/Lib/site-packages/flask_wtf/file.py:101
+msgid "File does not have an approved extension."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:86
+#, python-format
+msgid "Invalid field name '%s'."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:99
+#, python-format
+msgid "Field must be equal to %(other_name)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:146
+#, python-format
+msgid "Field must be at least %(min)d character long."
+msgid_plural "Field must be at least %(min)d characters long."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:152
+#, python-format
+msgid "Field cannot be longer than %(max)d character."
+msgid_plural "Field cannot be longer than %(max)d characters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:158
+#, python-format
+msgid "Field must be exactly %(max)d character long."
+msgid_plural "Field must be exactly %(max)d characters long."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:164
+#, python-format
+msgid "Field must be between %(min)d and %(max)d characters long."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:216
+#, python-format
+msgid "Number must be at least %(min)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:219
+#, python-format
+msgid "Number must be at most %(max)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:222
+#, python-format
+msgid "Number must be between %(min)s and %(max)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:358
+msgid "Invalid input."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:422
+msgid "Invalid email address."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:460
+msgid "Invalid IP address."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:503
+msgid "Invalid Mac address."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:540
+msgid "Invalid URL."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:561
+msgid "Invalid UUID."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:595
+#, python-format
+msgid "Invalid value, must be one of: %(values)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:631
+#, python-format
+msgid "Invalid value, can't be any of: %(values)s."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:700
+msgid "This field cannot be edited."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/validators.py:716
+msgid "This field is disabled and cannot have a value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/csrf/core.py:96
+msgid "Invalid CSRF Token."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:64
+msgid "CSRF token missing."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:72
+msgid "CSRF failed."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:77
+msgid "CSRF token expired."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/choices.py:142
+msgid "Invalid Choice: could not coerce."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/choices.py:149
+#: venv/Lib/site-packages/wtforms/fields/choices.py:203
+msgid "Choices cannot be None."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/choices.py:155
+msgid "Not a valid choice."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/choices.py:194
+msgid "Invalid choice(s): one or more data inputs could not be coerced."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/choices.py:212
+#, python-format
+msgid "'%(value)s' is not a valid choice for this field."
+msgid_plural "'%(value)s' are not valid choices for this field."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/wtforms/fields/datetime.py:52
+msgid "Not a valid datetime value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/datetime.py:78
+msgid "Not a valid date value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/datetime.py:104
+msgid "Not a valid time value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/datetime.py:149
+msgid "Not a valid week value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/numeric.py:82
+#: venv/Lib/site-packages/wtforms/fields/numeric.py:92
+msgid "Not a valid integer value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/numeric.py:168
+msgid "Not a valid decimal value."
+msgstr ""
+
+#: venv/Lib/site-packages/wtforms/fields/numeric.py:197
+msgid "Not a valid float value."
+msgstr ""
+

@@ -1,0 +1,378 @@
+{% extends "base.html" %} {% block title %}Welcome - Siyafunda Digital Library{%
+endblock %} {% block content %}
+<div class="home-container">
+  <!-- Hero Image Section -->
+  <section class="hero-image-section">
+    <img
+      src="{{ url_for('static', filename='lib.jpg') }}"
+      alt="Library"
+      class="hero-library-image"
+    />
+  </section>
+
+  <!-- Welcome Text Section -->
+  <section class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">
+        <span class="title-gradient">Welcome to</span>
+        <span class="title-main">Siyafunda Digital Library</span>
+      </h1>
+      <p class="welcome-subtitle">
+        <span class="highlight">Empowering</span> Communities Through
+        <span class="highlight">Knowledge</span> and
+        <span class="highlight">Innovation</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- What We Offer Section -->
+  <section class="what-we-offer-section">
+    <h2 class="section-title">
+      <span class="title-accent">What We</span> Offer
+    </h2>
+    <div class="scroll-container">
+      <div class="scroll-content">
+        <div class="offer-card card-1">
+          <div class="offer-icon">📚</div>
+          <h3>Comprehensive Collection</h3>
+          <p>
+            Access e-books, journals, research papers, magazines, and
+            newspapers.
+          </p>
+        </div>
+        <div class="offer-card card-2">
+          <div class="offer-icon">🔍</div>
+          <h3>Advanced Search</h3>
+          <p>
+            Intelligent search functionality with powerful filtering options.
+          </p>
+        </div>
+        <div class="offer-card card-3">
+          <div class="offer-icon">🌍</div>
+          <h3>Multilingual Support</h3>
+          <p>Navigate in English or isiZulu with our bilingual interface.</p>
+        </div>
+        <div class="offer-card card-4">
+          <div class="offer-icon">💾</div>
+          <h3>Easy Downloads</h3>
+          <p>Download resources for offline study on any device.</p>
+        </div>
+        <div class="offer-card card-5">
+          <div class="offer-icon">🌐</div>
+          <h3>Open Access</h3>
+          <p>Freely accessible 24/7, supporting knowledge democratization.</p>
+        </div>
+        <div class="offer-card card-6">
+          <div class="offer-icon">🤝</div>
+          <h3>Community Focused</h3>
+          <p>Built for students, researchers, and lifelong learners.</p>
+        </div>
+        <!-- Duplicate for loop -->
+        <div class="offer-card card-1">
+          <div class="offer-icon">📚</div>
+          <h3>Comprehensive Collection</h3>
+          <p>
+            Access e-books, journals, research papers, magazines, and
+            newspapers.
+          </p>
+        </div>
+        <div class="offer-card card-2">
+          <div class="offer-icon">🔍</div>
+          <h3>Advanced Search</h3>
+          <p>
+            Intelligent search functionality with powerful filtering options.
+          </p>
+        </div>
+        <div class="offer-card card-3">
+          <div class="offer-icon">🌍</div>
+          <h3>Multilingual Support</h3>
+          <p>Navigate in English or isiZulu with our bilingual interface.</p>
+        </div>
+        <div class="offer-card card-4">
+          <div class="offer-icon">💾</div>
+          <h3>Easy Downloads</h3>
+          <p>Download resources for offline study on any device.</p>
+        </div>
+        <div class="offer-card card-5">
+          <div class="offer-icon">🌐</div>
+          <h3>Open Access</h3>
+          <p>Freely accessible 24/7, supporting knowledge democratization.</p>
+        </div>
+        <div class="offer-card card-6">
+          <div class="offer-icon">🤝</div>
+          <h3>Community Focused</h3>
+          <p>Built for students, researchers, and lifelong learners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .home-container {
+      width: 100%;
+    }
+
+    .hero-image-section {
+      margin: -2rem -2rem 0 -2rem;
+      overflow: hidden;
+    }
+    .hero-library-image {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Welcome Section - Vibrant */
+    .welcome-section {
+      background: linear-gradient(135deg, #fff 0%, #e3f9ff 100%);
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-section::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(
+        circle,
+        rgba(255, 180, 0, 0.1) 0%,
+        transparent 70%
+      );
+      border-radius: 50%;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .welcome-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .title-gradient {
+      display: block;
+      font-size: 2rem;
+      background: linear-gradient(
+        135deg,
+        #ff6b6b 0%,
+        #ffb347 50%,
+        #4ecdc4 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .title-main {
+      display: block;
+      color: #1a5f7a;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-subtitle {
+      font-size: 1.6rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      color: #ff6b6b;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* What We Offer - Colorful Cards */
+    .what-we-offer-section {
+      padding: 5rem 0;
+      background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+      overflow: hidden;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      color: #1a5f7a;
+      margin-bottom: 4rem;
+      font-weight: 800;
+    }
+
+    .title-accent {
+      color: #ff6b6b;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .scroll-content {
+      display: flex;
+      gap: 2rem;
+      animation: scroll 45s linear infinite;
+      padding: 1rem 0;
+    }
+
+    .scroll-content:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .offer-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      min-width: 320px;
+      max-width: 320px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+    }
+
+    .card-1::before {
+      background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+    }
+    .card-2::before {
+      background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    }
+    .card-3::before {
+      background: linear-gradient(90deg, #ffb347, #ffcc33);
+    }
+    .card-4::before {
+      background: linear-gradient(90deg, #a8e6cf, #56c596);
+    }
+    .card-5::before {
+      background: linear-gradient(90deg, #9b59b6, #c39bd3);
+    }
+    .card-6::before {
+      background: linear-gradient(90deg, #ff6b9d, #c06c84);
+    }
+
+    .offer-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .offer-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .offer-card h3 {
+      color: #1a5f7a;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .offer-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      background: linear-gradient(
+        135deg,
+        #ff6b6b 0%,
+        #ffb347 50%,
+        #4ecdc4 100%
+      );
+      padding: 4rem 2rem;
+    }
+
+    .stats-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-label {
+      font-size: 1.2rem;
+      font-weight: 600;
+      opacity: 0.95;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-library-image {
+        height: 300px;
+      }
+      .welcome-title {
+        font-size: 2.5rem;
+      }
+      .title-gradient {
+        font-size: 1.5rem;
+      }
+      .welcome-subtitle {
+        font-size: 1.2rem;
+      }
+      .offer-card {
+        min-width: 280px;
+        max-width: 280px;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+    }
+  </style>
+  {% endblock %}
+</div>

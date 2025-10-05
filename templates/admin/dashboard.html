@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  /* Modern Dashboard Styles */
+  .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+  .page-header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 3px solid var(--border-light); }
+  .page-header h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--heading-color); font-weight: 700; }
+  .page-header p { color: var(--text-muted); margin: 0; font-size: 1.1rem; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+  .stat-card { background: var(--card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-md); border: 2px solid var(--border-light); }
+  .stat-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .stat-value { font-size: 2.5rem; font-weight: 800; }
+  .stat-label { font-size: 1rem; color: var(--text-muted); font-weight: 600; }
+  .section-card { scroll-margin-top: 80px; background: var(--card-bg); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm); border: 2px solid var(--border-light); }
+  .section-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border-light); }
+  .section-title { font-size: 1.5rem; font-weight: 700; margin: 0; }
+  .chart-container { height: 400px; position: relative; }
+  .chart-controls { display: flex; gap: 0.5rem; }
+  .chart-btn { padding: 0.5rem 1rem; border: 2px solid var(--border-light); background: transparent; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+  .chart-btn.active { background: var(--primary-teal); color: white; border-color: var(--primary-teal); }
+  .quick-action-btn { display: block; padding: 1rem; border: 2px solid var(--border-light); border-radius: 12px; text-decoration: none; margin-bottom: 0.75rem; font-weight: bold; color: var(--text-dark); transition: all 0.3s ease; }
+  .quick-action-btn:hover { border-color: var(--primary-teal); background: var(--light-bg); transform: translateX(5px); }
+  .activity-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-light); }
+  .activity-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .modern-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .modern-table thead th { background: var(--light-bg); padding: 1rem; border-bottom: 2px solid var(--border-light); text-align: left; }
+  .modern-table tbody td { padding: 1rem; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+  .category-list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-radius: 8px; }
+  .category-list-item:nth-child(odd) { background: var(--light-bg); }
+  .pagination { justify-content: center; }
+</style>
+
+<div class="dashboard-container">
+  <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h2>{{ _('Admin Dashboard') }}</h2>
+        <p>{{ _('Overview of library statistics, resources, and user activity.') }}</p>
+      </div>
+      <a href="{{ url_for('admin.upload') }}" class="btn btn-primary btn-lg">
+        <i class="fas fa-upload me-2"></i>{{ _('Upload New Resource') }}
+      </a>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-value">{{ total_resources }}</div><div class="stat-label">{{ _('Total Resources') }}</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">{{ total_users }}</div><div class="stat-label">{{ _('Active Users') }}</div></div>
+    <div class="stat-card"><div class="stat-icon">⬇️</div><div class="stat-value">{{ total_downloads }}</div><div class="stat-label">{{ _('Total Downloads') }}</div></div>
+    <div class="stat-card"><div class="stat-icon">🏷️</div><div class="stat-value">{{ all_categories|length }}</div><div class="stat-label">{{ _('Categories') }}</div></div>
+  </div>
+
+  <div class="section-card" id="analytics">
+    <div class="section-header">
+      <h3 class="section-title">{{ _('Download Analytics') }}</h3>
+      <div class="chart-controls">
+        <button class="chart-btn active" data-period="7">{{ _('7 Days') }}</button>
+        <button class="chart-btn" data-period="30">{{ _('30 Days') }}</button>
+        <button class="chart-btn" data-period="90">{{ _('90 Days') }}</button>
+      </div>
+    </div>
+    <div class="chart-container"><canvas id="dailyDownloadsChart"></canvas></div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="section-card h-100">
+            <div class="section-header">
+                <h3 class="section-title">{{ _('Popular Searches') }}</h3>
+            </div>
+            {% if popular_searches %}
+            <ul class="list-group list-group-flush">
+                {% for search in popular_searches %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    "{{ search.query_text }}"
+                    <span class="badge bg-primary rounded-pill">{{ search.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted">{{ _('No search data available.') }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="section-card h-100">
+            <div class="section-header">
+                <h3 class="section-title">{{ _('Unsuccessful Searches') }}</h3>
+            </div>
+            {% if zero_result_searches %}
+            <ul class="list-group list-group-flush">
+                {% for search in zero_result_searches %}
+                <li class="list-group-item">
+                    "{{ search.query_text }}"
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted">{{ _('All recent searches found results.') }}</p>
+            {% endif %}
+        </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="section-card" id="recent-activity">
+        <div class="section-header">
+          <h3 class="section-title">{{ _('Recent Activity') }}</h3>
+          <div>
+            <a href="{{ url_for('admin.dashboard', activity_page=recent_downloads_pagination.prev_num, _anchor='recent-activity') if recent_downloads_pagination.has_prev else '#' }}" class="btn btn-outline-secondary btn-sm {{ 'disabled' if not recent_downloads_pagination.has_prev }}"><i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url_for('admin.dashboard', activity_page=recent_downloads_pagination.next_num, _anchor='recent-activity') if recent_downloads_pagination.has_next else '#' }}" class="btn btn-outline-secondary btn-sm {{ 'disabled' if not recent_downloads_pagination.has_next }}"><i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        {% if recent_downloads_pagination.items %}
+          {% for download in recent_downloads_pagination.items %}
+          <div class="activity-item">
+            <div><strong>{{ download.resource.title }}</strong><div class="text-muted small">{{ download.user.username }} • {{ download.download_date.strftime('%b %d, %Y at %H:%M') }}</div></div>
+            <span class="badge bg-primary">{{ download.resource.resource_type }}</span>
+          </div>
+          {% endfor %}
+        {% else %}<p class="text-muted">{{ _('No recent activity.') }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="section-card">
+        <div class="section-header"><h3 class="section-title">{{ _('Quick Actions') }}</h3></div>
+        <a href="{{ url_for('admin.upload') }}" class="quick-action-btn">{{ _('Upload Resource') }}</a>
+        <a href="{{ url_for('main.browse') }}" class="quick-action-btn">{{ _('Browse Library') }}</a>
+        <a href="#resource-management" class="quick-action-btn">{{ _('Manage Resources') }}</a>
+        <a href="#user-management" class="quick-action-btn">{{ _('Manage Users') }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card" id="category-management">
+    <div class="section-header"><h3 class="section-title">{{ _('Category Management') }}</h3></div>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <h5>{{ _('Add New Category') }}</h5>
+        <form action="{{ url_for('admin.add_category') }}" method="POST" class="d-flex gap-2">
+          {{ category_form.hidden_tag() }}
+          <div class="flex-grow-1">{{ category_form.name(class="form-control", placeholder=_('New category name')) }}</div>
+          {{ category_form.submit(class="btn btn-primary") }}
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h5>{{ _('Existing Categories') }}</h5>
+        <div class="category-list" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-light); padding: 1rem; border-radius: 8px;">
+          {% if all_categories %}
+            {% for category in all_categories %}
+            <div class="category-list-item">
+              <span>{{ category.name }}</span>
+              <form action="{{ url_for('admin.delete_category', category_id=category.id) }}" method="POST" onsubmit="return confirm('{{ _('Are you sure?') }}')"><button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></form>
+            </div>
+            {% endfor %}
+          {% else %}<p class="text-muted">{{ _('No categories created yet.') }}</p>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card" id="resource-management">
+    <div class="section-header">
+      <h3 class="section-title">{{ _('Resource Management') }}</h3>
+      <form method="GET" action="{{ url_for('admin.dashboard') }}#resource-management" class="d-flex align-items-center gap-2">
+        <select name="type_filter" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Types') }}</option>
+          {% for type_name in all_resource_types %}<option value="{{ type_name }}" {{ 'selected' if current_filter == type_name }}>{{ type_name }}</option>{% endfor %}
+        </select>
+        <noscript><button type="submit" class="btn btn-secondary btn-sm">{{ _('Filter') }}</button></noscript>
+      </form>
+    </div>
+    <div class="table-responsive">
+      <table class="table modern-table">
+        <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Creator') }}</th><th>{{ _('Type') }}</th><th>{{ _('Upload Date') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+        <tbody>
+          {% for resource in resources_pagination.items %}
+          <tr><td><strong>{{ resource.title }}</strong></td><td>{{ resource.creator }}</td><td><span class="badge bg-info">{{ resource.resource_type }}</span></td><td>{{ resource.upload_date.strftime('%b %d, %Y') }}</td>
+            <td class="d-flex gap-2">
+              <a href="{{ url_for('admin.edit_resource', resource_id=resource.id) }}" class="btn btn-sm btn-outline-primary">{{ _('Edit') }}</a>
+              <form action="{{ url_for('admin.delete_resource', resource_id=resource.id) }}" method="POST" onsubmit="return confirm('{{ _('Delete this resource?') }}')"><button type="submit" class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button></form>
+            </td>
+          </tr>
+          {% else %}<tr><td colspan="5" class="text-center text-muted p-5">{{ _('No resources found.') }}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if resources_pagination.pages > 1 %}
+    <nav class="mt-4"><ul class="pagination">
+        {% for page_num in resources_pagination.iter_pages() %}<li class="page-item {% if resources_pagination.page == page_num %}active{% endif %} {% if not page_num %}disabled{% endif %}"><a class="page-link" href="{{ url_for('admin.dashboard', resource_page=page_num, type_filter=current_filter, _anchor='resource-management') if page_num else '#'}}">{{ page_num if page_num else '...' }}</a></li>{% endfor %}
+    </ul></nav>
+    {% endif %}
+  </div>
+  
+  <div class="section-card" id="user-management">
+      <div class="section-header"><h3 class="section-title">{{ _('User Management') }}</h3></div>
+      <div class="table-responsive">
+        <table class="table modern-table">
+          <thead><tr><th>#</th><th>{{ _('Username') }}</th><th>{{ _('Email') }}</th><th>{{ _('Status') }}</th><th>{{ _('Action') }}</th></tr></thead>
+          <tbody>
+            {% for user in users_pagination.items %}
+            <tr><td>{{ user.id }}</td><td>{{ user.username }}</td><td>{{ user.email }}</td>
+              <td><span class="badge {{ 'bg-success' if user.is_active else 'bg-secondary' }}">{{ _('Active') if user.is_active else _('Inactive') }}</span></td>
+              <td>
+                {% if user.id != current_user.id %}
+                <form action="{{ url_for('admin.toggle_user_active', user_id=user.id) }}" method="POST">
+                  <button type="submit" class="btn btn-sm {{ 'btn-outline-warning' if user.is_active else 'btn-outline-success' }}">{{ _('Deactivate') if user.is_active else _('Activate') }}</button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if users_pagination.pages > 1 %}
+      <nav class="mt-4"><ul class="pagination">
+          {% for page_num in users_pagination.iter_pages() %}<li class="page-item {% if users_pagination.page == page_num %}active{% endif %} {% if not page_num %}disabled{% endif %}"><a class="page-link" href="{{ url_for('admin.dashboard', user_page=page_num, _anchor='user-management') if page_num else '#'}}">{{ page_num if page_num else '...' }}</a></li>{% endfor %}
+      </ul></nav>
+      {% endif %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Chart.js script for analytics
+    const ctx = document.getElementById("dailyDownloadsChart").getContext("2d");
+    let dailyDownloadsChart;
+    const lineGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    lineGradient.addColorStop(0, 'rgba(27, 122, 142, 0.6)');
+    lineGradient.addColorStop(1, 'rgba(27, 122, 142, 0)');
+    const chartConfig = { type: "line", data: { labels: [], datasets: [{ label: "{{ _('Downloads') }}", data: [], borderColor: 'rgba(27, 122, 142, 1)', backgroundColor: lineGradient, tension: 0.4, fill: true, borderWidth: 3, pointBackgroundColor: 'rgba(27, 122, 142, 1)', pointBorderColor: '#fff', pointHoverRadius: 7, pointRadius: 5 }], }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#fff', titleColor: '#333', bodyColor: '#666', borderColor: '#ddd', borderWidth: 1, padding: 10, cornerRadius: 8 } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, color: '#6c757d' }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { ticks: { color: '#6c757d' }, grid: { display: false } } }, }, };
+    async function fetchChartData(period) {
+        try {
+            const response = await fetch(`{{ url_for('admin.download_analytics_by_day') }}?period=${period}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const chartJson = await response.json();
+            dailyDownloadsChart.data.labels = chartJson.labels;
+            dailyDownloadsChart.data.datasets[0].data = chartJson.data;
+            const maxValue = Math.max(...chartJson.data, 0);
+            dailyDownloadsChart.options.scales.y.ticks.stepSize = (maxValue < 10) ? 1 : undefined;
+            dailyDownloadsChart.update();
+        } catch (error) { console.error('Failed to fetch chart data:', error); }
+    }
+    dailyDownloadsChart = new Chart(ctx, chartConfig);
+    document.querySelectorAll(".chart-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            document.querySelectorAll(".chart-btn").forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+            fetchChartData(this.dataset.period);
+        });
+    });
+    fetchChartData(7);
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find all links that point to an admin delete URL.
+        const deleteLinks = document.querySelectorAll('a[href*="/admin/delete/"]');
+
+        deleteLinks.forEach(function(link) {
+            // If the link is already inside a form, it's probably correct.
+            const parentForm = link.closest('form');
+            if (parentForm) return; 
+
+            // If it's a standalone link, override its behavior
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                if (confirm('{{ _('Delete this resource?') }}')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = link.href;
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

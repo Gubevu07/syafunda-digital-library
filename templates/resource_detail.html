@@ -1,0 +1,491 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  .resource-detail-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb-nav {
+    margin-bottom: 2rem;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--light-bg);
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  .breadcrumb-nav a {
+    color: var(--primary-teal);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .breadcrumb-nav a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-nav span {
+    color: var(--text-muted);
+    margin: 0 0.5rem;
+  }
+
+  .resource-header {
+    margin-bottom: 3rem;
+  }
+
+  .resource-main-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .resource-author {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .resource-author strong {
+    color: var(--primary-teal);
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-teal), transparent);
+    margin: 2rem 0;
+  }
+
+  .resource-content-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .resource-image-section {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+  }
+
+  .resource-preview-image {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+    transition: transform 0.3s ease;
+  }
+
+  .resource-preview-image:hover {
+    transform: scale(1.02);
+  }
+
+  .action-buttons {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-download-main {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-download-main:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(
+      135deg,
+      var(--primary-dark) 0%,
+      var(--primary-teal) 100%
+    );
+  }
+
+  .btn-favorite-main {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-success {
+    color: var(--success-green);
+    background-color: transparent;
+  }
+
+  .btn-outline-success:hover {
+    background-color: var(--success-green);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .resource-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .info-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  .info-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .description-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    text-align: justify;
+  }
+
+  .metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .metadata-item {
+    padding: 1rem;
+    background: var(--light-bg);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-teal);
+  }
+
+  .metadata-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .metadata-value {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .tag {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.1) 0%,
+      rgba(13, 74, 88, 0.15) 100%
+    );
+    color: var(--primary-teal);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid var(--primary-teal);
+    transition: all 0.3s ease;
+  }
+
+  .tag:hover {
+    background: var(--primary-teal);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 1024px) {
+    .resource-content-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .resource-image-section {
+      position: relative;
+      top: 0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .action-buttons {
+      flex-direction: row;
+    }
+
+    .resource-main-title {
+      font-size: 2.2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .metadata-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+
+    .resource-main-title {
+      font-size: 1.8rem;
+    }
+
+    .resource-author {
+      font-size: 1.1rem;
+    }
+
+    .btn-download-main {
+      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  /* --- Dark Mode Overrides --- */
+  .dark .breadcrumb-nav {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-dark);
+  }
+
+  .dark .resource-main-title,
+  .dark .info-card-title {
+    color: var(--heading-color);
+  }
+
+  .dark .resource-author {
+    color: var(--text-muted);
+  }
+
+  .dark .info-card {
+    background: var(--card-bg);
+    border-color: var(--border-dark);
+  }
+
+  .dark .description-text,
+  .dark .metadata-value {
+    color: var(--text-light);
+  }
+
+  .dark .metadata-item {
+    background: var(--dark-bg);
+  }
+
+  .dark .tag {
+    background: rgba(79, 209, 197, 0.15);
+    border-color: rgba(79, 209, 197, 0.5);
+    color: #4fd1c5;
+  }
+
+  .dark .tag:hover {
+    background: var(--primary-teal);
+    color: var(--primary-dark);
+  }
+</style>
+
+<div class="resource-detail-container">
+  <nav class="breadcrumb-nav">
+    <a href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
+    <span>/</span>
+    <a href="{{ url_for('main.browse') }}">{{ _('Browse') }}</a>
+    <span>/</span>
+    <span style="color: var(--text-dark); font-weight: 600"
+      >{{ resource.title }}</span
+    >
+  </nav>
+
+  <div class="resource-header">
+    <h1 class="resource-main-title">{{ resource.title }}</h1>
+    <p class="resource-author">
+      <strong>{{ _('by') }}</strong> {{ resource.creator }}
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="resource-content-grid">
+    <div class="resource-image-section">
+      {% if resource.preview_image %}
+      <img
+        src="{{ url_for('main.serve_upload', filename=resource.preview_image) }}"
+        class="resource-preview-image"
+        alt="{{ _('Preview of %(title)s', title=resource.title) }}"
+      />
+      {% else %}
+      <img
+        src="https://via.placeholder.com/400x500.png?text=No+Image"
+        class="resource-preview-image"
+        alt="{{ _('No preview available') }}"
+      />
+      {% endif %}
+
+      <div class="action-buttons">
+        <a
+          href="{{ url_for('main.download', resource_id=resource.id) }}"
+          class="btn btn-download-main"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          {{ _('Download Now') }}
+        </a>
+
+        {% if current_user.is_authenticated and current_user.role != 'admin' %}
+        {% if resource in current_user.favorite_resources %}
+        <form
+          action="{{ url_for('user.remove_favorite', resource_id=resource.id) }}"
+          method="POST"
+        >
+          <button
+            type="submit"
+            class="btn btn-outline-danger btn-favorite-main"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            {{ _('Remove from Favorites') }}
+          </button>
+        </form>
+        {% else %}
+        <form
+          action="{{ url_for('user.add_favorite', resource_id=resource.id) }}"
+          method="POST"
+        >
+          <button
+            type="submit"
+            class="btn btn-outline-success btn-favorite-main"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            {{ _('Add to Favorites') }}
+          </button>
+        </form>
+        {% endif %} {% endif %}
+      </div>
+    </div>
+
+    <div class="resource-info-section">
+      <div class="info-card">
+        <h2 class="info-card-title">{{ _('Description') }}</h2>
+        <p class="description-text">{{ resource.description }}</p>
+
+        {% if resource.subject %}
+        <div class="tags-container">
+          {% for keyword in resource.subject.split(',') %}
+          <span class="tag">{{ keyword.strip() }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="info-card">
+        <h2 class="info-card-title">{{ _('Resource Information') }}</h2>
+        <div class="metadata-grid">
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Resource Type') }}</div>
+            <div class="metadata-value">{{ resource.resource_type }}</div>
+          </div>
+
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Language') }}</div>
+            <div class="metadata-value">{{ resource.language }}</div>
+          </div>
+
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Format') }}</div>
+            <div class="metadata-value">{{ resource.format }}</div>
+          </div>
+
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Publisher') }}</div>
+            <div class="metadata-value">{{ resource.publisher }}</div>
+          </div>
+
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Publication Date') }}</div>
+            <div class="metadata-value">
+              {{ resource.publication_date.strftime('%d %B %Y') if
+              resource.publication_date else _('Not specified') }}
+            </div>
+          </div>
+
+          <div class="metadata-item">
+            <div class="metadata-label">{{ _('Rights') }}</div>
+            <div class="metadata-value">{{ resource.rights }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

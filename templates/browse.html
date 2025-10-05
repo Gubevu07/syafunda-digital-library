@@ -1,0 +1,449 @@
+{% extends "base.html" %} {% block title %}{{ _('Browse Library') }}{% endblock
+%} {% block content %}
+<style>
+  .page-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-family: "Inter", sans-serif;
+  }
+
+  /* --- MODIFIED STYLE FOR EVEN ROWS --- */
+  .resources-grid {
+    display: grid;
+    /* Default to 3 equal columns for desktop */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .resource-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .resource-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-teal);
+  }
+
+  .resource-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(27, 122, 142, 0.05) 0%,
+      rgba(13, 74, 88, 0.08) 100%
+    );
+  }
+
+  .resource-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .resource-card:hover .resource-image {
+    transform: scale(1.05);
+  }
+
+  .resource-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .resource-card:hover .resource-image-overlay {
+    opacity: 1;
+  }
+
+  .resource-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .resource-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resource-title a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .resource-title a:hover {
+    color: var(--primary-teal);
+  }
+
+  .resource-creator {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .resource-footer {
+    padding: 0 1.5rem 1.5rem;
+    margin-top: auto;
+  }
+
+  .btn-download {
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 600;
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border: none;
+    color: white;
+  }
+
+  .btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(27, 122, 142, 0.3);
+  }
+
+  .btn-favorite {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 2px solid currentColor;
+  }
+
+  .btn-outline-success {
+    color: var(--success-green);
+    background-color: transparent;
+  }
+
+  .btn-outline-success:hover {
+    background-color: var(--success-green);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .admin-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-warning {
+    background-color: #fbbf24;
+    border: none;
+    color: #78350f;
+  }
+
+  .btn-warning:hover {
+    background-color: #f59e0b;
+    transform: translateY(-2px);
+  }
+
+  .btn-danger {
+    background-color: #ef4444;
+    border: none;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+  }
+
+  .pagination {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .page-item {
+    margin: 0;
+  }
+
+  .page-link {
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-light);
+    color: var(--primary-teal);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+
+  .page-link:hover {
+    background-color: var(--primary-teal);
+    color: white;
+    border-color: var(--primary-teal);
+    transform: translateY(-2px);
+  }
+
+  .page-item.active .page-link {
+    background: linear-gradient(
+      135deg,
+      var(--primary-teal) 0%,
+      var(--primary-dark) 100%
+    );
+    border-color: var(--primary-teal);
+    color: white;
+  }
+
+  .page-item.disabled .page-link {
+    background-color: var(--light-bg);
+    border-color: var(--border-light);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--light-bg);
+    border-radius: 16px;
+    margin: 3rem 0;
+  }
+
+  .empty-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  /* --- UPDATED MEDIA QUERIES FOR RESPONSIVENESS --- */
+  @media (max-width: 992px) {
+    /* For tablets */
+    .resources-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+    }
+
+    .resource-image-wrapper {
+      height: 280px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    /* For mobile phones */
+    .resources-grid {
+      grid-template-columns: 1fr; /* Single column */
+    }
+
+    .admin-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="page-header">
+  <h1 class="page-title">{{ _('Browse Our Collection') }}</h1>
+  <p class="page-subtitle">
+    {{ _('Explore thousands of digital resources across multiple subjects and
+    formats') }}
+  </p>
+</div>
+
+{% if resources %}
+<div class="resources-grid">
+  {% for resource in resources %}
+  <div class="resource-card">
+    <div class="resource-image-wrapper">
+      <a href="{{ url_for('main.resource_detail', resource_id=resource.id) }}">
+        {% if resource.preview_image %}
+        <img
+          src="{{ url_for('main.serve_upload', filename=resource.preview_image) }}"
+          class="resource-image"
+          alt="{{ _('Preview of %(title)s', title=resource.title) }}"
+        />
+        {% else %}
+        <img
+          src="https://via.placeholder.com/400x500.png?text=No+Image"
+          class="resource-image"
+          alt="{{ _('No preview available') }}"
+        />
+        {% endif %}
+        <div class="resource-image-overlay"></div>
+      </a>
+    </div>
+
+    <div class="resource-body">
+      <h5 class="resource-title">
+        <a
+          href="{{ url_for('main.resource_detail', resource_id=resource.id) }}"
+        >
+          {{ resource.title }}
+        </a>
+      </h5>
+      <p class="resource-creator">
+        {{ _('by %(creator)s', creator=resource.creator) }}
+      </p>
+    </div>
+
+    <div class="resource-footer">
+      <a
+        href="{{ url_for('main.download', resource_id=resource.id) }}"
+        class="btn btn-download"
+      >
+        {{ _('Download Resource') }}
+      </a>
+
+      {% if current_user.is_authenticated and current_user.role != 'admin' %} {%
+      if resource in current_user.favorite_resources %}
+      <form
+        action="{{ url_for('user.remove_favorite', resource_id=resource.id) }}"
+        method="POST"
+      >
+        <button type="submit" class="btn btn-outline-danger btn-favorite">
+          ❤️ {{ _('Remove from Favorites') }}
+        </button>
+      </form>
+      {% else %}
+      <form
+        action="{{ url_for('user.add_favorite', resource_id=resource.id) }}"
+        method="POST"
+      >
+        <button type="submit" class="btn btn-outline-success btn-favorite">
+          🤍 {{ _('Add to Favorites') }}
+        </button>
+      </form>
+      {% endif %} {% endif %} {% if current_user.role == 'admin' %}
+      <div class="admin-actions">
+        <a
+          href="{{ url_for('admin.edit_resource', resource_id=resource.id) }}"
+          class="btn btn-sm btn-warning flex-grow-1"
+        >
+          {{ _('Edit') }}
+        </a>
+        <form
+          action="{{ url_for('admin.delete_resource', resource_id=resource.id) }}"
+          method="POST"
+          onsubmit="return confirm('{{ _('Are you sure you want to delete this resource?') }}');"
+          class="flex-grow-1"
+        >
+          <button type="submit" class="btn btn-sm btn-danger w-100">
+            {{ _('Delete') }}
+          </button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<nav>
+  <ul class="pagination">
+    {% for page_num in pagination.iter_pages() %} {% if page_num %} {% if
+    pagination.page == page_num %}
+    <li class="page-item active">
+      <a class="page-link" href="{{ url_for('main.browse', page=page_num) }}"
+        >{{ page_num }}</a
+      >
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" href="{{ url_for('main.browse', page=page_num) }}"
+        >{{ page_num }}</a
+      >
+    </li>
+    {% endif %} {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">...</span>
+    </li>
+    {% endif %} {% endfor %}
+  </ul>
+</nav>
+
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📚</div>
+  <h2 class="empty-title">{{ _('No Resources Yet') }}</h2>
+  <p class="empty-text">
+    {{ _('There are no resources in the library at the moment. Check back
+    soon!') }}
+  </p>
+</div>
+{% endif %} {% endblock %}
