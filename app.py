@@ -104,6 +104,8 @@ def create_app():
 
 # --- RUN APPLICATION ---
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
-    app = create_app()
+    local_app = create_app()
+    local_app.run(debug=True)
+
+
+app = create_app()
